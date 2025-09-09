@@ -4,7 +4,7 @@ pygame.init()
 
 screen = pygame.display.set_mode((500, 500))
 
-jogador_img = pygame.image.load('img/jogador.png').convert()
+jogador_img = pygame.image.load('img/jogador_right.png').convert()
 jogador_img = pygame.transform.scale(jogador_img, (20, 20))
 
 jogador_rect = jogador_img.get_rect()
@@ -27,15 +27,23 @@ while running:
     keys = pygame.key.get_pressed()
     
     if keys[pygame.K_LEFT]:
+        jogador_img = pygame.image.load('img/jogador_left.png').convert()
+        jogador_img = pygame.transform.scale(jogador_img, (20, 20))
         jogador_rect.x -= 10
     
     if keys[pygame.K_RIGHT]:
+        jogador_img = pygame.image.load('img/jogador_right.png').convert()
+        jogador_img = pygame.transform.scale(jogador_img, (20, 20))
         jogador_rect.x += 10
     
     if keys[pygame.K_UP]:
+        jogador_img = pygame.image.load('img/jogador_up.png').convert()
+        jogador_img = pygame.transform.scale(jogador_img, (20, 20))
         jogador_rect.y -= 10
     
     if keys[pygame.K_DOWN]:
+        jogador_img = pygame.image.load('img/jogador_down.png').convert()
+        jogador_img = pygame.transform.scale(jogador_img, (20, 20))
         jogador_rect.y += 10
 
     pygame.display.flip()
