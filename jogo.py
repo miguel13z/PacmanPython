@@ -40,6 +40,4 @@ while running:
 
     pygame.display.flip()
 
-    delta_time = clock.tick(120)
-
 pygame.quit()
