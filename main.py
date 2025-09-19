@@ -12,27 +12,19 @@ def desenha_mapa():
             if mapa[i][j] == 2:
                 pygame.draw.circle(screen, 'white', (j * num2 + (0.5 * num2), i * num1 + (0.5 * num1)), 5)
             if mapa[i][j] == 3:
-                pygame.draw.line(screen, cor_mapa, (j * num2 + (0.5 * num2), i * num1),
-                                 (j * num2 + (0.5 * num2), i * num1 + num1), 3)
+                pygame.draw.line(screen, cor_mapa, (j * num2 + (0.5 * num2), i * num1), (j * num2 + (0.5 * num2), i * num1 + num1), 3)
             if mapa[i][j] == 4:
-                pygame.draw.line(screen, cor_mapa, (j * num2, i * num1 + (0.5 * num1)),
-                                 (j * num2 + num2, i * num1 + (0.5 * num1)), 3)
+                pygame.draw.line(screen, cor_mapa, (j * num2, i * num1 + (0.5 * num1)), (j * num2 + num2, i * num1 + (0.5 * num1)), 3)
             if mapa[i][j] == 5:
-                pygame.draw.arc(screen, cor_mapa, [(j * num2 - (num2 * 0.4)) - 2, (i * num1 + (0.5 * num1)), num2, num1],
-                                0, pi / 2, 3)
+                pygame.draw.arc(screen, cor_mapa, [(j * num2 - (num2 * 0.4)) - 2, (i * num1 + (0.5 * num1)), num2, num1], 0, pi / 2, 3)
             if mapa[i][j] == 6:
-                pygame.draw.arc(screen, cor_mapa,
-                                [(j * num2 + (num2 * 0.5)), (i * num1 + (0.5 * num1)), num2, num1], pi / 2, pi, 3)
+                pygame.draw.arc(screen, cor_mapa, [(j * num2 + (num2 * 0.5)), (i * num1 + (0.5 * num1)), num2, num1], pi / 2, pi, 3)
             if mapa[i][j] == 7:
-                pygame.draw.arc(screen, cor_mapa, [(j * num2 + (num2 * 0.5)), (i * num1 - (0.4 * num1)), num2, num1], pi,
-                                3 * pi / 2, 3)
+                pygame.draw.arc(screen, cor_mapa, [(j * num2 + (num2 * 0.5)), (i * num1 - (0.4 * num1)), num2, num1], pi, 3 * pi / 2, 3)
             if mapa[i][j] == 8:
-                pygame.draw.arc(screen, cor_mapa,
-                                [(j * num2 - (num2 * 0.4)) - 2, (i * num1 - (0.4 * num1)), num2, num1], 3 * pi / 2,
-                                2 * pi, 3)
+                pygame.draw.arc(screen, cor_mapa, [(j * num2 - (num2 * 0.4)) - 2, (i * num1 - (0.4 * num1)), num2, num1], 3 * pi / 2, 2 * pi, 3)
             if mapa[i][j] == 9:
-                pygame.draw.line(screen, 'white', (j * num2, i * num1 + (0.5 * num1)),
-                                 (j * num2 + num2, i * num1 + (0.5 * num1)), 3)
+                pygame.draw.line(screen, 'white', (j * num2, i * num1 + (0.5 * num1)), (j * num2 + num2, i * num1 + (0.5 * num1)), 3)
 
 
 largura = 500
