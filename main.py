@@ -1,6 +1,6 @@
 import copy
 import pygame
-from funcoes import desenha_mapa, desenha_jogador, verifica_posicao, mover_jogador
+from funcoes import desenha_mapa, desenha_jogador, verifica_posicao, mover_jogador, verifica_colisao
 from mapa import mapa
 
 pygame.init()
@@ -20,6 +20,7 @@ flicker = False
 pode_virar = [False, False, False, False]
 comando_direcao = 0
 velocidade = 2
+pontuacao = 0
 
 rodando = True
 while rodando:
@@ -31,6 +32,7 @@ while rodando:
     centro_y = jogador_y + 10
     pode_virar = verifica_posicao(centro_x, centro_y, largura, altura, direcao, level)
     jogador_x, jogador_y = mover_jogador(direcao, jogador_x, jogador_y, pode_virar, velocidade)
+    pontuacao = verifica_colisao(altura, largura, jogador_x, level, centro_x, centro_y, pontuacao)
 
     if contador < 19:
         contador += 1

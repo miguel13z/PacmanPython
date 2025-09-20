@@ -2,6 +2,25 @@ import pygame
 from mapa import mapa
 from math import pi
 
+def verifica_colisao(altura, largura, jogador_x, level, centro_x, centro_y, pontuacao):
+    num1 = altura // 32
+    num2 = largura // 30
+    if 0 < jogador_x < 400:
+        linha = centro_y // num1
+        coluna = centro_x // num2
+
+        if level[linha][coluna] == 1:
+            level[linha][coluna] = 0
+            mapa[linha][coluna] = 0
+            pontuacao += 10
+
+        if level[linha][coluna] == 2:
+            level[linha][coluna] = 0
+            mapa[linha][coluna] = 0
+            pontuacao += 50
+
+    return pontuacao
+
 def desenha_mapa(altura, largura, tela, flicker):
     num1 = altura // 32
     num2 = largura // 30
@@ -25,7 +44,6 @@ def desenha_mapa(altura, largura, tela, flicker):
                 pygame.draw.arc(tela, 'blue', [(j * num2 - (num2 * 0.4)) - 2, (i * num1 - (0.4 * num1)), num2, num1], 3 * pi / 2, 2 * pi, 3)
             if mapa[i][j] == 9:
                 pygame.draw.line(tela, 'white', (j * num2, i * num1 + (0.5 * num1)), (j * num2 + num2, i * num1 + (0.5 * num1)), 3)
-
 
 imagens_jogador = []
 for i in range(1, 5):
