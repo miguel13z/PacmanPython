@@ -12,8 +12,8 @@ temporizador = pygame.time.Clock()
 fps = 60
 font = pygame.font.Font('freesansbold.ttf', 20)
 level = copy.deepcopy(mapa)
-jogador_x = 200
-jogador_y = 308
+jogador_x = 220
+jogador_y = 330
 direcao = 0
 contador = 0
 flicker = False
@@ -62,14 +62,14 @@ while rodando:
             if event.key == pygame.K_DOWN and comando_direcao == 3:
                comando_direcao = direcao
 
-        for i in range(4):
-            if comando_direcao == i and pode_virar[i]:
-                direcao = i
+    for i in range(4):
+        if comando_direcao == i and pode_virar[i]:
+            direcao = i
 
-        if jogador_x > largura:
-            jogador_x = -23
-        elif jogador_x < -25:
-            jogador_x = 293
+    if jogador_x > largura:
+        jogador_x = -23
+    elif jogador_x < -25:
+        jogador_x = 293
 
     pygame.display.flip()
 

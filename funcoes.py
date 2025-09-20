@@ -3,7 +3,7 @@ from mapa import mapa
 from math import pi
 
 def desenha_mapa(altura, largura, tela, flicker):
-    num1 = (altura - 50) // 32
+    num1 = altura // 32
     num2 = largura // 30
     for i in range(len(mapa)):
         for j in range(len(mapa[i])):
@@ -41,13 +41,15 @@ def desenha_jogador(direcao, tela, contador, jogador_x, jogador_y):
     if direcao == 3:
         tela.blit(pygame.transform.rotate(imagens_jogador[contador // 5], 270), (jogador_x, jogador_y))
 
+# No seu arquivo de funções (funcoes.py), substitua a função inteira por esta:
+
 def verifica_posicao(centro_x, centro_y, largura, altura, direcao, level):
     pode_virar = [False, False, False, False]
-    num1 = (altura - 25) // 16
-    num2 = largura // 15
-    num3 = 7
+    num1 = altura // 32
+    num2 = largura // 30
+    num3 = num2 // 2
 
-    if centro_x // 30 < 29:
+    if centro_x // num2 < 29:
         if direcao == 0:
             if level[centro_y // num1][(centro_x - num3) // num2] < 3:
                 pode_virar[1] = True
@@ -61,24 +63,30 @@ def verifica_posicao(centro_x, centro_y, largura, altura, direcao, level):
             if level[(centro_y - num3) // num1][centro_x // num2] < 3:
                 pode_virar[2] = True
 
-        if direcao == 2 or direcao == 3:
-            if 12 <= centro_x % num2 <= 18:
+        centro_tile_x_min = (num2 // 2) - 2
+        centro_tile_x_max = (num2 // 2) + 2
+        centro_tile_y_min = (num1 // 2) - 2
+        centro_tile_y_max = (num1 // 2) + 2
+        
+        if direcao == 2 or direcao == 3: 
+            if centro_tile_x_min <= centro_x % num2 <= centro_tile_x_max:
                 if level[(centro_y + num3) // num1][centro_x // num2] < 3:
                     pode_virar[3] = True
                 if level[(centro_y - num3) // num1][centro_x // num2] < 3:
                     pode_virar[2] = True
-            if 12 <= centro_y % num1 <= 18:
+            if centro_tile_y_min <= centro_y % num1 <= centro_tile_y_max:
                 if level[centro_y // num1][(centro_x - num2) // num2] < 3:
                     pode_virar[1] = True
                 if level[centro_y // num1][(centro_x + num2) // num2] < 3:
                     pode_virar[0] = True
-        if direcao == 0 or direcao == 1:
-            if 12 <= centro_x % num2 <= 18:
+
+        if direcao == 0 or direcao == 1: 
+            if centro_tile_x_min <= centro_x % num2 <= centro_tile_x_max:
                 if level[(centro_y + num1) // num1][centro_x // num2] < 3:
                     pode_virar[3] = True
                 if level[(centro_y - num1) // num1][centro_x // num2] < 3:
                     pode_virar[2] = True
-            if 12 <= centro_y % num1 <= 18:
+            if centro_tile_y_min <= centro_y % num1 <= centro_tile_y_max:
                 if level[centro_y // num1][(centro_x - num3) // num2] < 3:
                     pode_virar[1] = True
                 if level[centro_y // num1][(centro_x + num3) // num2] < 3:
