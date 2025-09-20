@@ -1,6 +1,6 @@
 import copy
 import pygame
-from funcoes import desenha_mapa, desenha_jogador, verifica_posicao, mover_jogador, verifica_colisao
+from funcoes import desenha_mapa, desenha_jogador, verifica_posicao, mover_jogador, verifica_colisao, desenha_pontuacao
 from mapa import mapa
 
 pygame.init()
@@ -10,7 +10,7 @@ altura = 475
 tela = pygame.display.set_mode((largura, altura))
 temporizador = pygame.time.Clock()
 fps = 60
-font = pygame.font.Font('freesansbold.ttf', 20)
+fonte = pygame.font.Font('freesansbold.ttf', 15)
 level = copy.deepcopy(mapa)
 jogador_x = 220
 jogador_y = 330
@@ -28,6 +28,7 @@ while rodando:
     tela.fill('black')
     desenha_mapa(altura, largura, tela, flicker)
     desenha_jogador(direcao, tela, contador, jogador_x, jogador_y)
+    desenha_pontuacao(fonte, pontuacao, tela)
     centro_x = jogador_x + 10
     centro_y = jogador_y + 10
     pode_virar = verifica_posicao(centro_x, centro_y, largura, altura, direcao, level)

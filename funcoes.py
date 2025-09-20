@@ -2,6 +2,10 @@ import pygame
 from mapa import mapa
 from math import pi
 
+def desenha_pontuacao(fonte, pontuacao, tela):
+    texto_pontuacao = fonte.render(f'Score: {pontuacao}', True, 'white')
+    tela.blit(texto_pontuacao, (10,460))
+
 def verifica_colisao(altura, largura, jogador_x, level, centro_x, centro_y, pontuacao):
     num1 = altura // 32
     num2 = largura // 30
