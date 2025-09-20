@@ -69,7 +69,7 @@ while rodando:
     if jogador_x > largura:
         jogador_x = -23
     elif jogador_x < -25:
-        jogador_x = 293
+        jogador_x = 410
 
     pygame.display.flip()
 
