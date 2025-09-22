@@ -2,11 +2,16 @@ import pygame
 from mapa import mapa
 from math import pi
 
-def desenha_pontuacao(fonte, pontuacao, tela):
+def desenha_pontuacao(fonte, pontuacao, tela, powerup, vidas):
     texto_pontuacao = fonte.render(f'Score: {pontuacao}', True, 'white')
     tela.blit(texto_pontuacao, (10,460))
+    if powerup:
+        pygame.draw.circle(tela, 'blue', (100, 465), 5)
+        
+    for i in range(vidas):
+        tela.blit(pygame.transform.scale(imagens_jogador[0], (15, 15)), (350 + i * 20, 458))
 
-def verifica_colisao(altura, largura, jogador_x, level, centro_x, centro_y, pontuacao):
+def verifica_colisao(altura, largura, jogador_x, level, centro_x, centro_y, pontuacao, power, contador_power, fantasmas_mortos):
     num1 = altura // 32
     num2 = largura // 30
     if 0 < jogador_x < 400:
@@ -22,8 +27,12 @@ def verifica_colisao(altura, largura, jogador_x, level, centro_x, centro_y, pont
             level[linha][coluna] = 0
             mapa[linha][coluna] = 0
             pontuacao += 50
+            power = True
+            contador_power = 0
+            fantasmas_mortos = [False, False, False, False]
 
-    return pontuacao
+
+    return pontuacao, power, contador_power, fantasmas_mortos
 
 def desenha_mapa(altura, largura, tela, flicker):
     num1 = altura // 32
@@ -62,8 +71,6 @@ def desenha_jogador(direcao, tela, contador, jogador_x, jogador_y):
         tela.blit(pygame.transform.rotate(imagens_jogador[contador // 5], 90), (jogador_x, jogador_y))
     if direcao == 3:
         tela.blit(pygame.transform.rotate(imagens_jogador[contador // 5], 270), (jogador_x, jogador_y))
-
-# No seu arquivo de funções (funcoes.py), substitua a função inteira por esta:
 
 def verifica_posicao(centro_x, centro_y, largura, altura, direcao, level):
     pode_virar = [False, False, False, False]
