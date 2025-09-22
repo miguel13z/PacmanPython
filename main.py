@@ -98,103 +98,224 @@ class Fantasma:
         return fantasma_rect
     
     def verifica_colisao(self):
-        tile_largura = largura // 30
-        tile_altura = altura // 32 
-        
-        meia_largura = tile_largura // 2
-        meia_altura = tile_altura // 2
-        
-        coluna_atual = int(self.centro_x / tile_largura)
-        linha_atual = int(self.centro_y / tile_altura)
-
+        num1 = altura // 32
+        num2 = largura // 30
+        num3 = num2 // 2
         self.vira = [False, False, False, False]
-
-        if 0 < coluna_atual < 29:
-            tile_direita = level[linha_atual][(self.centro_x + meia_largura) // tile_largura]
-            if tile_direita < 3 or (tile_direita == 9 and (self.na_caixa or self.morto)):
-                self.vira[0] = True
-
-            tile_esquerda = level[linha_atual][(self.centro_x - meia_largura) // tile_largura]
-            if tile_esquerda < 3 or (tile_esquerda == 9 and (self.na_caixa or self.morto)):
+        if self.centro_x // num2 < 29:
+            if level[(self.centro_y - num3) // num1][self.centro_x // num2] == 9:
+                self.vira[2] = True
+            if level[self.centro_y // num1][(self.centro_x - num3) // num2] < 3 \
+                    or (level[self.centro_y // num1][(self.centro_x - num3) // num2] == 9 and (
+                    self.na_caixa or self.morto)):
                 self.vira[1] = True
-
-            tile_cima = level[(self.centro_y - meia_altura) // tile_altura][coluna_atual]
-            if tile_cima < 3 or (tile_cima == 9 and (self.na_caixa or self.morto)):
+            if level[self.centro_y // num1][(self.centro_x + num3) // num2] < 3 \
+                    or (level[self.centro_y // num1][(self.centro_x + num3) // num2] == 9 and (
+                    self.na_caixa or self.morto)):
+                self.vira[0] = True
+            if level[(self.centro_y + num3) // num1][self.centro_x // num2] < 3 \
+                    or (level[(self.centro_y + num3) // num1][self.centro_x // num2] == 9 and (
+                    self.na_caixa or self.morto)):
+                self.vira[3] = True
+            if level[(self.centro_y - num3) // num1][self.centro_x // num2] < 3 \
+                    or (level[(self.centro_y - num3) // num1][self.centro_x // num2] == 9 and (
+                    self.na_caixa or self.morto)):
                 self.vira[2] = True
 
-            tile_baixo = level[(self.centro_y + meia_altura) // tile_altura][coluna_atual]
-            if tile_baixo < 3 or (tile_baixo == 9 and (self.na_caixa or self.morto)):
-                self.vira[3] = True
-        
-        else:
-            self.vira[0] = True 
-            self.vira[1] = True 
+            centro_tile_x_min = (num2 // 2) - 2
+            centro_tile_x_max = (num2 // 2) + 2
+            centro_tile_y_min = (num1 // 2) - 2
+            centro_tile_y_max = (num1 // 2) + 2
 
-        if (11 <= coluna_atual <= 18) and (12 <= linha_atual <= 15):
+            if self.direcao == 2 or self.direcao == 3:
+                if centro_tile_x_min <= self.centro_x % num2 <= centro_tile_x_max:
+                    if level[(self.centro_y + num3) // num1][self.centro_x // num2] < 3 \
+                            or (level[(self.centro_y + num3) // num1][self.centro_x // num2] == 9 and (
+                            self.na_caixa or self.morto)):
+                        self.vira[3] = True
+                    if level[(self.centro_y - num3) // num1][self.centro_x // num2] < 3 \
+                            or (level[(self.centro_y - num3) // num1][self.centro_x // num2] == 9 and (
+                            self.na_caixa or self.morto)):
+                        self.vira[2] = True
+                if centro_tile_y_min <= self.centro_y % num1 <= centro_tile_y_max:
+                    if level[self.centro_y // num1][(self.centro_x - num2) // num2] < 3 \
+                            or (level[self.centro_y // num1][(self.centro_x - num2) // num2] == 9 and (
+                            self.na_caixa or self.morto)):
+                        self.vira[1] = True
+                    if level[self.centro_y // num1][(self.centro_x + num2) // num2] < 3 \
+                            or (level[self.centro_y // num1][(self.centro_x + num2) // num2] == 9 and (
+                            self.na_caixa or self.morto)):
+                        self.vira[0] = True
+
+            if self.direcao == 0 or self.direcao == 1:
+                if centro_tile_x_min <= self.centro_x % num2 <= centro_tile_x_max:
+                    if level[(self.centro_y + num3) // num1][self.centro_x // num2] < 3 \
+                            or (level[(self.centro_y + num3) // num1][self.centro_x // num2] == 9 and (
+                            self.na_caixa or self.morto)):
+                        self.vira[3] = True
+                    if level[(self.centro_y - num3) // num1][self.centro_x // num2] < 3 \
+                            or (level[(self.centro_y - num3) // num1][self.centro_x // num2] == 9 and (
+                            self.na_caixa or self.morto)):
+                        self.vira[2] = True
+                if centro_tile_y_min <= self.centro_y % num1 <= centro_tile_y_max:
+                    if level[self.centro_y // num1][(self.centro_x - num3) // num2] < 3 \
+                            or (level[self.centro_y // num1][(self.centro_x - num3) // num2] == 9 and (
+                            self.na_caixa or self.morto)):
+                        self.vira[1] = True
+                    if level[self.centro_y // num1][(self.centro_x + num3) // num2] < 3 \
+                            or (level[self.centro_y // num1][(self.centro_x + num3) // num2] == 9 and (
+                            self.na_caixa or self.morto)):
+                        self.vira[0] = True
+        else:
+            self.vira[0] = True
+            self.vira[1] = True
+
+        
+        if 150 < self.coord_x < 270 and 165 < self.coord_y < 230:
             self.na_caixa = True
         else:
             self.na_caixa = False
-            
+
         return self.vira, self.na_caixa
 
     def clyde_movimento(self):
-        opcoes = []
-        if self.vira[0]: opcoes.append(0)
-        if self.vira[1]: opcoes.append(1)
-        if self.vira[2]: opcoes.append(2)
-        if self.vira[3]: opcoes.append(3)
+        if self.direcao == 0:
+            if self.alvo[0] > self.coord_x and self.vira[0]:
+                self.coord_x += self.velocidade
+            elif not self.vira[0]:
+                if self.alvo[1] > self.coord_y and self.vira[3]:
+                    self.direcao = 3
+                    self.coord_y += self.velocidade
+                elif self.alvo[1] < self.coord_y and self.vira[2]:
+                    self.direcao = 2
+                    self.coord_y -= self.velocidade
+                elif self.alvo[0] < self.coord_x and self.vira[1]:
+                    self.direcao = 1
+                    self.coord_x -= self.velocidade
+                elif self.vira[3]:
+                    self.direcao = 3
+                    self.coord_y += self.velocidade
+                elif self.vira[2]:
+                    self.direcao = 2
+                    self.coord_y -= self.velocidade
+                elif self.vira[1]:
+                    self.direcao = 1
+                    self.coord_x -= self.velocidade
+            elif self.vira[0]:
+                if self.alvo[1] > self.coord_y and self.vira[3]:
+                    self.direcao = 3
+                    self.coord_y += self.velocidade
+                if self.alvo[1] < self.coord_y and self.vira[2]:
+                    self.direcao = 2
+                    self.coord_y -= self.velocidade
+                else:
+                    self.coord_x += self.velocidade
+        elif self.direcao == 1:
+            if self.alvo[1] > self.coord_y and self.vira[3]:
+                self.direcao = 3
+            elif self.alvo[0] < self.coord_x and self.vira[1]:
+                self.coord_x -= self.velocidade
+            elif not self.vira[1]:
+                if self.alvo[1] > self.coord_y and self.vira[3]:
+                    self.direcao = 3
+                    self.coord_y += self.velocidade
+                elif self.alvo[1] < self.coord_y and self.vira[2]:
+                    self.direcao = 2
+                    self.coord_y -= self.velocidade
+                elif self.alvo[0] > self.coord_x and self.vira[0]:
+                    self.direcao = 0
+                    self.coord_x += self.velocidade
+                elif self.vira[3]:
+                    self.direcao = 3
+                    self.coord_y += self.velocidade
+                elif self.vira[2]:
+                    self.direcao = 2
+                    self.coord_y -= self.velocidade   
+                elif self.vira[0]:
+                    self.direcao = 0
+                    self.coord_x += self.velocidade
+            elif self.vira[1]:
+                if self.alvo[1] > self.coord_y and self.vira[3]:
+                    self.direcao = 3
+                    self.coord_y += self.velocidade
+                if self.alvo[1] < self.coord_y and self.vira[2]:
+                    self.direcao = 2
+                    self.coord_y -= self.velocidade
+                else:
+                    self.coord_x -= self.velocidade
+        elif self.direcao == 2:
+            if self.alvo[0] < self.coord_x and self.vira[1]:
+                self.direcao = 1
+                self.coord_x -= self.velocidade
+            elif self.alvo[1] < self.coord_y and self.vira[2]:
+                self.direcao = 2
+                self.coord_y -= self.velocidade
+            elif not self.vira[2]:
+                if self.alvo[0] > self.coord_x and self.vira[0]:
+                    self.direcao = 0
+                    self.coord_x += self.velocidade
+                elif self.alvo[0] < self.coord_x and self.vira[1]:
+                    self.direcao = 1
+                    self.coord_x -= self.velocidade
+                elif self.alvo[1] > self.coord_y and self.vira[3]:
+                    self.direcao = 3
+                    self.coord_y += self.velocidade
+                elif self.vira[1]:
+                    self.direcao = 1
+                    self.coord_x -= self.velocidade
+                elif self.vira[3]:
+                    self.direcao = 3
+                    self.coord_y += self.velocidade
+                elif self.vira[0]:
+                    self.direcao = 0
+                    self.coord_x += self.velocidade
+            elif self.vira[2]:
+                if self.alvo[0] > self.coord_x and self.vira[0]:
+                    self.direcao = 0
+                    self.coord_x += self.velocidade
+                elif self.alvo[0] < self.coord_x and self.vira[1]:
+                    self.direcao = 1
+                    self.coord_x -= self.velocidade
+                else:
+                    self.coord_y -= self.velocidade
+        elif self.direcao == 3:
+            if self.alvo[1] > self.coord_y and self.vira[3]:
+                self.coord_y += self.velocidade
+            elif not self.vira[3]:
+                if self.alvo[0] > self.coord_x and self.vira[0]:
+                    self.direcao = 0
+                    self.coord_x += self.velocidade
+                elif self.alvo[0] < self.coord_x and self.vira[1]:
+                    self.direcao = 1
+                    self.coord_x -= self.velocidade
+                elif self.alvo[1] < self.coord_y and self.vira[2]:
+                    self.direcao = 2
+                    self.coord_y -= self.velocidade
+                elif self.vira[2]:
+                    self.direcao = 2
+                    self.coord_y -= self.velocidade
+                elif self.vira[1]:
+                    self.direcao = 1
+                    self.coord_x -= self.velocidade
+                elif self.vira[0]:
+                    self.direcao = 0
+                    self.coord_x += self.velocidade
+            elif self.vira[3]:
+                if self.alvo[0] > self.coord_x and self.vira[0]:
+                    self.direcao = 0
+                    self.coord_x += self.velocidade
+                elif self.alvo[0] < self.coord_x and self.vira[1]:
+                    self.direcao = 1
+                    self.coord_x -= self.velocidade
+                else:
+                    self.coord_y += self.velocidade
+                    
 
-        if self.direcao == 0 and 1 in opcoes and len(opcoes) > 1:
-            opcoes.remove(1)
-        if self.direcao == 1 and 0 in opcoes and len(opcoes) > 1:
-            opcoes.remove(0)
-        if self.direcao == 2 and 3 in opcoes and len(opcoes) > 1:
-            opcoes.remove(3)
-        if self.direcao == 3 and 2 in opcoes and len(opcoes) > 1:
-            opcoes.remove(2)
+        if self.coord_x > largura:
+            self.coord_x = -23
+        elif self.coord_x < -25:
+            self.coord_x = 410
 
-        if len(opcoes) == 1:
-            self.direcao = opcoes[0]
-        elif len(opcoes) > 1:
-            melhor_opcao = self.direcao
-            distancia_minima = 999999
-
-            for op in opcoes:
-                if op == 0: 
-                    dist_x = (self.coord_x + self.velocidade) - self.alvo[0]
-                    dist_y = self.coord_y - self.alvo[1]
-                elif op == 1: 
-                    dist_x = (self.coord_x - self.velocidade) - self.alvo[0]
-                    dist_y = self.coord_y - self.alvo[1]
-                elif op == 2: 
-                    dist_x = self.coord_x - self.alvo[0]
-                    dist_y = (self.coord_y - self.velocidade) - self.alvo[1]
-                elif op == 3: 
-                    dist_x = self.coord_x - self.alvo[0]
-                    dist_y = (self.coord_y + self.velocidade) - self.alvo[1]
-                
-                distancia = (dist_x ** 2 + dist_y ** 2) ** 0.5
-
-                if distancia < distancia_minima:
-                    distancia_minima = distancia
-                    melhor_opcao = op
-            
-            self.direcao = melhor_opcao
-
-        if self.direcao == 0: 
-            self.coord_x += self.velocidade
-        elif self.direcao == 1: 
-            self.coord_x -= self.velocidade
-        elif self.direcao == 2: 
-            self.coord_y -= self.velocidade
-        elif self.direcao == 3: 
-            self.coord_y += self.velocidade
-
-        if self.coord_x < -25:
-            self.coord_x = 420
-        elif self.coord_x > largura:
-            self.coord_x = -13
-            
         return self.coord_x, self.coord_y, self.direcao
 
 def busca_alvos(blink_x, blink_y, ink_x, ink_y, pink_x, pink_y, clyd_x, clyd_y):
