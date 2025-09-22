@@ -98,9 +98,167 @@ class Fantasma:
         return fantasma_rect
     
     def verifica_colisao(self):
+        tile_largura = largura // 30
+        tile_altura = altura // 32 
+        
+        meia_largura = tile_largura // 2
+        meia_altura = tile_altura // 2
+        
+        coluna_atual = int(self.centro_x / tile_largura)
+        linha_atual = int(self.centro_y / tile_altura)
+
         self.vira = [False, False, False, False]
-        self.na_caixa = True
+
+        if 0 < coluna_atual < 29:
+            tile_direita = level[linha_atual][(self.centro_x + meia_largura) // tile_largura]
+            if tile_direita < 3 or (tile_direita == 9 and (self.na_caixa or self.morto)):
+                self.vira[0] = True
+
+            tile_esquerda = level[linha_atual][(self.centro_x - meia_largura) // tile_largura]
+            if tile_esquerda < 3 or (tile_esquerda == 9 and (self.na_caixa or self.morto)):
+                self.vira[1] = True
+
+            tile_cima = level[(self.centro_y - meia_altura) // tile_altura][coluna_atual]
+            if tile_cima < 3 or (tile_cima == 9 and (self.na_caixa or self.morto)):
+                self.vira[2] = True
+
+            tile_baixo = level[(self.centro_y + meia_altura) // tile_altura][coluna_atual]
+            if tile_baixo < 3 or (tile_baixo == 9 and (self.na_caixa or self.morto)):
+                self.vira[3] = True
+        
+        else:
+            self.vira[0] = True 
+            self.vira[1] = True 
+
+        if (11 <= coluna_atual <= 18) and (12 <= linha_atual <= 15):
+            self.na_caixa = True
+        else:
+            self.na_caixa = False
+            
         return self.vira, self.na_caixa
+
+    def clyde_movimento(self):
+        opcoes = []
+        if self.vira[0]: opcoes.append(0)
+        if self.vira[1]: opcoes.append(1)
+        if self.vira[2]: opcoes.append(2)
+        if self.vira[3]: opcoes.append(3)
+
+        if self.direcao == 0 and 1 in opcoes and len(opcoes) > 1:
+            opcoes.remove(1)
+        if self.direcao == 1 and 0 in opcoes and len(opcoes) > 1:
+            opcoes.remove(0)
+        if self.direcao == 2 and 3 in opcoes and len(opcoes) > 1:
+            opcoes.remove(3)
+        if self.direcao == 3 and 2 in opcoes and len(opcoes) > 1:
+            opcoes.remove(2)
+
+        if len(opcoes) == 1:
+            self.direcao = opcoes[0]
+        elif len(opcoes) > 1:
+            melhor_opcao = self.direcao
+            distancia_minima = 999999
+
+            for op in opcoes:
+                if op == 0: 
+                    dist_x = (self.coord_x + self.velocidade) - self.alvo[0]
+                    dist_y = self.coord_y - self.alvo[1]
+                elif op == 1: 
+                    dist_x = (self.coord_x - self.velocidade) - self.alvo[0]
+                    dist_y = self.coord_y - self.alvo[1]
+                elif op == 2: 
+                    dist_x = self.coord_x - self.alvo[0]
+                    dist_y = (self.coord_y - self.velocidade) - self.alvo[1]
+                elif op == 3: 
+                    dist_x = self.coord_x - self.alvo[0]
+                    dist_y = (self.coord_y + self.velocidade) - self.alvo[1]
+                
+                distancia = (dist_x ** 2 + dist_y ** 2) ** 0.5
+
+                if distancia < distancia_minima:
+                    distancia_minima = distancia
+                    melhor_opcao = op
+            
+            self.direcao = melhor_opcao
+
+        if self.direcao == 0: 
+            self.coord_x += self.velocidade
+        elif self.direcao == 1: 
+            self.coord_x -= self.velocidade
+        elif self.direcao == 2: 
+            self.coord_y -= self.velocidade
+        elif self.direcao == 3: 
+            self.coord_y += self.velocidade
+
+        if self.coord_x < -25:
+            self.coord_x = 420
+        elif self.coord_x > largura:
+            self.coord_x = -13
+            
+        return self.coord_x, self.coord_y, self.direcao
+
+def busca_alvos(blink_x, blink_y, ink_x, ink_y, pink_x, pink_y, clyd_x, clyd_y):
+    if jogador_x < 210:
+        fuga_x = 420
+    else:
+        fuga_x = 0
+    if jogador_y < 210:
+        fuga_y = 420
+    else:
+        fuga_y = 0
+
+    local_retorno = (200, 200)
+
+    if powerup:
+
+        if not blinky.morto:
+            blink_alvo = (fuga_x, fuga_y)
+        else:
+            blink_alvo= local_retorno
+
+        if not inky.morto:
+            ink_alvo = (fuga_x, jogador_y)
+        else:
+            ink_alvo = local_retorno
+
+        if not pinky.morto:
+            pink_alvo = (jogador_x, fuga_y)
+        else:
+            pink_alvo = local_retorno
+
+        if not clyde.morto:
+            clyd_alvo = (450, 450)
+        else:
+            clyd_alvo = local_retorno
+
+    else:
+
+        if not blinky.morto:
+            if 160 < blink_x < 362 and 160 < blink_y < 250:
+                blink_alvo = (211, 50)
+            else:
+                blink_alvo = (jogador_x, jogador_y)
+
+        if not inky.morto:
+            if 160 < ink_x < 362 and 160 < ink_y < 250:
+                ink_alvo = (211, 50)
+            else:
+                ink_alvo = (jogador_x, jogador_y)
+
+        if not pinky.morto:
+            if 160 < pink_x < 362 and 160 < pink_y < 250:
+                pink_alvo = (211, 50)
+            else:
+                pink_alvo = (jogador_x, jogador_y)
+
+        if not clyde.morto:
+            if 160 < clyd_x < 362 and 160 < clyd_y < 250:
+                clyd_alvo = (211, 50)
+            else:
+                clyd_alvo = (jogador_x, jogador_y)
+
+    return [blink_alvo, ink_alvo, pink_alvo, clyd_alvo]
+
 
 rodando = True
 while rodando:
@@ -115,11 +273,16 @@ while rodando:
     clyde = Fantasma(clyde_x, clyde_y, alvos[0], velocidade_fantasma, img_clyde, direcao_clyde, clyde_morto, clyde_caixa, 1)
 
     desenha_pontuacao(fonte, pontuacao, tela, powerup, vidas)
+    alvos = busca_alvos(blinky_x, blinky_y, inky_x, inky_y, pinky_x, pinky_y, clyde_x, clyde_y)
     centro_x = jogador_x + 10
     centro_y = jogador_y + 10
     pode_virar = verifica_posicao(centro_x, centro_y, largura, altura, direcao, level)
     if movendo:
         jogador_x, jogador_y = mover_jogador(direcao, jogador_x, jogador_y, pode_virar, velocidade)
+        blinky_x, blinky_y, direcao_blinky = blinky.clyde_movimento()
+        pinky_x, pinky_y, direcao_pinky = pinky.clyde_movimento()
+        inky_x, inky_y, direcao_inky = inky.clyde_movimento()
+        clyde_x, clyde_y, direcao_clyde = clyde.clyde_movimento()
     pontuacao, powerup, contador_power, fantasmas_mortos = verifica_colisao(altura, largura, jogador_x, level, centro_x, centro_y, pontuacao, powerup, contador_power, fantasmas_mortos)
 
     if contador < 19:
