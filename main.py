@@ -107,35 +107,35 @@ class Fantasma:
         coluna_atual = int(self.centro_x / tile_largura)
         linha_atual = int(self.centro_y / tile_altura)
 
-        vira = [False, False, False, False]
+        self.vira = [False, False, False, False]
 
         if 0 < coluna_atual < 29:
             tile_direita = level[linha_atual][(self.centro_x + meia_largura) // tile_largura]
             if tile_direita < 3 or (tile_direita == 9 and (self.na_caixa or self.morto)):
-                vira[0] = True
+                self.vira[0] = True
 
             tile_esquerda = level[linha_atual][(self.centro_x - meia_largura) // tile_largura]
             if tile_esquerda < 3 or (tile_esquerda == 9 and (self.na_caixa or self.morto)):
-                vira[1] = True
+                self.vira[1] = True
 
             tile_cima = level[(self.centro_y - meia_altura) // tile_altura][coluna_atual]
             if tile_cima < 3 or (tile_cima == 9 and (self.na_caixa or self.morto)):
-                vira[2] = True
+                self.vira[2] = True
 
             tile_baixo = level[(self.centro_y + meia_altura) // tile_altura][coluna_atual]
             if tile_baixo < 3 or (tile_baixo == 9 and (self.na_caixa or self.morto)):
-                vira[3] = True
+                self.vira[3] = True
         
         else:
-            vira[0] = True 
-            vira[1] = True 
+            self.vira[0] = True 
+            self.vira[1] = True 
 
         if (11 <= coluna_atual <= 18) and (12 <= linha_atual <= 15):
-            na_caixa = True
+            self.na_caixa = True
         else:
-            na_caixa = False
+            self.na_caixa = False
             
-        return vira, na_caixa
+        return self.vira, self.na_caixa
 
     def clyde_movimento(self):
         opcoes = []
@@ -197,6 +197,69 @@ class Fantasma:
             
         return self.coord_x, self.coord_y, self.direcao
 
+def busca_alvos(blink_x, blink_y, ink_x, ink_y, pink_x, pink_y, clyd_x, clyd_y):
+    if jogador_x < 210:
+        fuga_x = 420
+    else:
+        fuga_x = 0
+    if jogador_y < 210:
+        fuga_y = 420
+    else:
+        fuga_y = 0
+
+    local_retorno = (200, 200)
+
+    if powerup:
+
+        if not blinky.morto:
+            blink_alvo = (fuga_x, fuga_y)
+        else:
+            blink_alvo= local_retorno
+
+        if not inky.morto:
+            ink_alvo = (fuga_x, jogador_y)
+        else:
+            ink_alvo = local_retorno
+
+        if not pinky.morto:
+            pink_alvo = (jogador_x, fuga_y)
+        else:
+            pink_alvo = local_retorno
+
+        if not clyde.morto:
+            clyd_alvo = (450, 450)
+        else:
+            clyd_alvo = local_retorno
+
+    else:
+
+        if not blinky.morto:
+            if 160 < blink_x < 362 and 160 < blink_y < 250:
+                blink_alvo = (211, 50)
+            else:
+                blink_alvo = (jogador_x, jogador_y)
+
+        if not inky.morto:
+            if 160 < ink_x < 362 and 160 < ink_y < 250:
+                ink_alvo = (211, 50)
+            else:
+                ink_alvo = (jogador_x, jogador_y)
+
+        if not pinky.morto:
+            if 160 < pink_x < 362 and 160 < pink_y < 250:
+                pink_alvo = (211, 50)
+            else:
+                pink_alvo = (jogador_x, jogador_y)
+
+        if not clyde.morto:
+            if 160 < clyd_x < 362 and 160 < clyd_y < 250:
+                clyd_alvo = (211, 50)
+            else:
+                clyd_alvo = (jogador_x, jogador_y)
+
+    return [blink_alvo, ink_alvo, pink_alvo, clyd_alvo]
+
+
 rodando = True
 while rodando:
     temporizador.tick(fps)
@@ -210,6 +273,7 @@ while rodando:
     clyde = Fantasma(clyde_x, clyde_y, alvos[0], velocidade_fantasma, img_clyde, direcao_clyde, clyde_morto, clyde_caixa, 1)
 
     desenha_pontuacao(fonte, pontuacao, tela, powerup, vidas)
+    alvos = busca_alvos(blinky_x, blinky_y, inky_x, inky_y, pinky_x, pinky_y, clyde_x, clyde_y)
     centro_x = jogador_x + 10
     centro_y = jogador_y + 10
     pode_virar = verifica_posicao(centro_x, centro_y, largura, altura, direcao, level)
