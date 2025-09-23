@@ -63,11 +63,13 @@ inky_caixa= False
 clyde_caixa = False
 pinky_caixa = False
 
-velocidade_fantasma = 2
+velocidade_fantasma = [2, 2, 2, 2]
 
 contador_inicio = 0
 movendo = False
 vidas = 3
+fim_de_jogo = False
+jogo_ganho = False
 
 #Criando a classe Fantasma apenas por enquanto
 class Fantasma:
@@ -87,7 +89,9 @@ class Fantasma:
         self.rect = self.desenha()
 
     def desenha(self):
-        if (not powerup and not self.morto) or (fantasmas_mortos[self.id] and powerup and not self.morto):
+        if self.na_caixa:
+            tela.blit(self.img, (self.coord_x, self.coord_y))
+        elif (not powerup and not self.morto) or (fantasmas_mortos[self.id] and powerup and not self.morto):
             tela.blit(self.img, (self.coord_x, self.coord_y))
         elif powerup and not self.morto and not fantasmas_mortos[self.id]:
             tela.blit(img_spooked, (self.coord_x, self.coord_y))
@@ -102,7 +106,7 @@ class Fantasma:
         num2 = largura // 30
         num3 = num2 // 2
         self.vira = [False, False, False, False]
-        if self.centro_x // num2 < 29:
+        if 0 < self.centro_x // num2 < 29:
             if level[(self.centro_y - num3) // num1][self.centro_x // num2] == 9:
                 self.vira[2] = True
             if level[self.centro_y // num1][(self.centro_x - num3) // num2] < 3 \
@@ -171,12 +175,369 @@ class Fantasma:
             self.vira[1] = True
 
         
-        if 150 < self.coord_x < 270 and 165 < self.coord_y < 230:
+        if 190 < self.coord_x < 230 and 190 < self.coord_y < 230:
             self.na_caixa = True
         else:
             self.na_caixa = False
 
         return self.vira, self.na_caixa
+
+    def blinky_movimento(self):
+        
+        if self.direcao == 0:
+            if self.alvo[0] > self.coord_x and self.vira[0]:
+                self.coord_x += self.velocidade
+            elif not self.vira[0]:
+                if self.alvo[1] > self.coord_y and self.vira[3]:
+                    self.direcao = 3
+                    self.coord_y += self.velocidade
+                elif self.alvo[1] < self.coord_y and self.vira[2]:
+                    self.direcao = 2
+                    self.coord_y -= self.velocidade
+                elif self.alvo[0] < self.coord_x and self.vira[1]:
+                    self.direcao = 1
+                    self.coord_x -= self.velocidade
+                elif self.vira[3]:
+                    self.direcao = 3
+                    self.coord_y += self.velocidade
+                elif self.vira[2]:
+                    self.direcao = 2
+                    self.coord_y -= self.velocidade
+                elif self.vira[1]:
+                    self.direcao = 1
+                    self.coord_x -= self.velocidade
+            elif self.vira[0]:
+                self.coord_x += self.velocidade
+        elif self.direcao == 1:
+            if self.alvo[0] < self.coord_x and self.vira[1]:
+                self.coord_x -= self.velocidade
+            elif not self.vira[1]:
+                if self.alvo[1] > self.coord_y and self.vira[3]:
+                    self.direcao = 3
+                    self.coord_y += self.velocidade
+                elif self.alvo[1] < self.coord_y and self.vira[2]:
+                    self.direcao = 2
+                    self.coord_y -= self.velocidade
+                elif self.alvo[0] > self.coord_x and self.vira[0]:
+                    self.direcao = 0
+                    self.coord_x += self.velocidade
+                elif self.vira[3]:
+                    self.direcao = 3
+                    self.coord_y += self.velocidade
+                elif self.vira[2]:
+                    self.direcao = 2
+                    self.coord_y -= self.velocidade   
+                elif self.vira[0]:
+                    self.direcao = 0
+                    self.coord_x += self.velocidade
+            elif self.vira[1]:
+                self.coord_x -= self.velocidade
+        elif self.direcao == 2:
+            if self.alvo[1] < self.coord_y and self.vira[2]:
+                self.direcao = 2
+                self.coord_y -= self.velocidade
+            elif not self.vira[2]:
+                if self.alvo[0] > self.coord_x and self.vira[0]:
+                    self.direcao = 0
+                    self.coord_x += self.velocidade
+                elif self.alvo[0] < self.coord_x and self.vira[1]:
+                    self.direcao = 1
+                    self.coord_x -= self.velocidade
+                elif self.alvo[1] > self.coord_y and self.vira[3]:
+                    self.direcao = 3
+                    self.coord_y += self.velocidade
+                elif self.vira[3]:
+                    self.direcao = 3
+                    self.coord_y += self.velocidade
+                elif self.vira[0]:
+                    self.direcao = 0
+                    self.coord_x += self.velocidade
+                elif self.vira[1]:
+                    self.direcao = 1
+                    self.coord_x -= self.velocidade
+            elif self.vira[2]:
+                self.coord_y -= self.velocidade
+        elif self.direcao == 3:
+            if self.alvo[1] > self.coord_y and self.vira[3]:
+                self.coord_y += self.velocidade
+            elif not self.vira[3]:
+                if self.alvo[0] > self.coord_x and self.vira[0]:
+                    self.direcao = 0
+                    self.coord_x += self.velocidade
+                elif self.alvo[0] < self.coord_x and self.vira[1]:
+                    self.direcao = 1
+                    self.coord_x -= self.velocidade
+                elif self.alvo[1] < self.coord_y and self.vira[2]:
+                    self.direcao = 2
+                    self.coord_y -= self.velocidade
+                elif self.vira[2]:
+                    self.direcao = 2
+                    self.coord_y -= self.velocidade
+                elif self.vira[0]:
+                    self.direcao = 0
+                    self.coord_x += self.velocidade
+                elif self.vira[1]:
+                    self.direcao = 1
+                    self.coord_x -= self.velocidade
+            elif self.vira[3]:
+                self.coord_y += self.velocidade
+                    
+
+        if self.coord_x > largura:
+            self.coord_x = -23
+        elif self.coord_x < -25:
+            self.coord_x = 410
+
+        return self.coord_x, self.coord_y, self.direcao
+
+    def inky_movimento(self):
+        if self.direcao == 0:
+            if self.alvo[0] > self.coord_x and self.vira[0]:
+                self.coord_x += self.velocidade
+            elif not self.vira[0]:
+                if self.alvo[1] > self.coord_y and self.vira[3]:
+                    self.direcao = 3
+                    self.coord_y += self.velocidade
+                elif self.alvo[1] < self.coord_y and self.vira[2]:
+                    self.direcao = 2
+                    self.coord_y -= self.velocidade
+                elif self.alvo[0] < self.coord_x and self.vira[1]:
+                    self.direcao = 1
+                    self.coord_x -= self.velocidade
+                elif self.vira[3]:
+                    self.direcao = 3
+                    self.coord_y += self.velocidade
+                elif self.vira[2]:
+                    self.direcao = 2
+                    self.coord_y -= self.velocidade
+                elif self.vira[1]:
+                    self.direcao = 1
+                    self.coord_x -= self.velocidade
+            elif self.vira[0]:
+                if self.alvo[1] > self.coord_y and self.vira[3]:
+                    self.direcao = 3
+                    self.coord_y += self.velocidade
+                if self.alvo[1] < self.coord_y and self.vira[2]:
+                    self.direcao = 2
+                    self.coord_y -= self.velocidade
+                else:
+                    self.coord_x += self.velocidade
+        elif self.direcao == 1:
+            if self.alvo[1] > self.coord_y and self.vira[3]:
+                self.direcao = 3
+            elif self.alvo[0] < self.coord_x and self.vira[1]:
+                self.coord_x -= self.velocidade
+            elif not self.vira[1]:
+                if self.alvo[1] > self.coord_y and self.vira[3]:
+                    self.direcao = 3
+                    self.coord_y += self.velocidade
+                elif self.alvo[1] < self.coord_y and self.vira[2]:
+                    self.direcao = 2
+                    self.coord_y -= self.velocidade
+                elif self.alvo[0] > self.coord_x and self.vira[0]:
+                    self.direcao = 0
+                    self.coord_x += self.velocidade
+                elif self.vira[3]:
+                    self.direcao = 3
+                    self.coord_y += self.velocidade
+                elif self.vira[2]:
+                    self.direcao = 2
+                    self.coord_y -= self.velocidade   
+                elif self.vira[0]:
+                    self.direcao = 0
+                    self.coord_x += self.velocidade
+            elif self.vira[1]:
+                if self.alvo[1] > self.coord_y and self.vira[3]:
+                    self.direcao = 3
+                    self.coord_y += self.velocidade
+                if self.alvo[1] < self.coord_y and self.vira[2]:
+                    self.direcao = 2
+                    self.coord_y -= self.velocidade
+                else:
+                    self.coord_x -= self.velocidade
+        elif self.direcao == 2:
+            if self.alvo[1] < self.coord_y and self.vira[2]:
+                self.direcao = 2
+                self.coord_y -= self.velocidade
+            elif not self.vira[2]:
+                if self.alvo[0] > self.coord_x and self.vira[0]:
+                    self.direcao = 0
+                    self.coord_x += self.velocidade
+                elif self.alvo[0] < self.coord_x and self.vira[1]:
+                    self.direcao = 1
+                    self.coord_x -= self.velocidade
+                elif self.alvo[1] > self.coord_y and self.vira[3]:
+                    self.direcao = 3
+                    self.coord_y += self.velocidade
+                elif self.vira[1]:
+                    self.direcao = 1
+                    self.coord_x -= self.velocidade
+                elif self.vira[3]:
+                    self.direcao = 3
+                    self.coord_y += self.velocidade
+                elif self.vira[0]:
+                    self.direcao = 0
+                    self.coord_x += self.velocidade
+            elif self.vira[2]:
+                self.coord_y -= self.velocidade
+        elif self.direcao == 3:
+            if self.alvo[1] > self.coord_y and self.vira[3]:
+                self.coord_y += self.velocidade
+            elif not self.vira[3]:
+                if self.alvo[0] > self.coord_x and self.vira[0]:
+                    self.direcao = 0
+                    self.coord_x += self.velocidade
+                elif self.alvo[0] < self.coord_x and self.vira[1]:
+                    self.direcao = 1
+                    self.coord_x -= self.velocidade
+                elif self.alvo[1] < self.coord_y and self.vira[2]:
+                    self.direcao = 2
+                    self.coord_y -= self.velocidade
+                elif self.vira[2]:
+                    self.direcao = 2
+                    self.coord_y -= self.velocidade
+                elif self.vira[1]:
+                    self.direcao = 1
+                    self.coord_x -= self.velocidade
+                elif self.vira[0]:
+                    self.direcao = 0
+                    self.coord_x += self.velocidade
+            elif self.vira[3]:
+                self.coord_y += self.velocidade
+                    
+
+        if self.coord_x > largura:
+            self.coord_x = -23
+        elif self.coord_x < -25:
+            self.coord_x = 410
+
+        return self.coord_x, self.coord_y, self.direcao
+
+    def pinky_movimento(self):
+        if self.direcao == 0:
+            if self.alvo[0] > self.coord_x and self.vira[0]:
+                self.coord_x += self.velocidade
+            elif not self.vira[0]:
+                if self.alvo[1] > self.coord_y and self.vira[3]:
+                    self.direcao = 3
+                    self.coord_y += self.velocidade
+                elif self.alvo[1] < self.coord_y and self.vira[2]:
+                    self.direcao = 2
+                    self.coord_y -= self.velocidade
+                elif self.alvo[0] < self.coord_x and self.vira[1]:
+                    self.direcao = 1
+                    self.coord_x -= self.velocidade
+                elif self.vira[3]:
+                    self.direcao = 3
+                    self.coord_y += self.velocidade
+                elif self.vira[2]:
+                    self.direcao = 2
+                    self.coord_y -= self.velocidade
+                elif self.vira[1]:
+                    self.direcao = 1
+                    self.coord_x -= self.velocidade
+            elif self.vira[0]:
+                self.coord_x += self.velocidade
+        elif self.direcao == 1:
+            if self.alvo[1] > self.coord_y and self.vira[3]:
+                self.direcao = 3
+            elif self.alvo[0] < self.coord_x and self.vira[1]:
+                self.coord_x -= self.velocidade
+            elif not self.vira[1]:
+                if self.alvo[1] > self.coord_y and self.vira[3]:
+                    self.direcao = 3
+                    self.coord_y += self.velocidade
+                elif self.alvo[1] < self.coord_y and self.vira[2]:
+                    self.direcao = 2
+                    self.coord_y -= self.velocidade
+                elif self.alvo[0] > self.coord_x and self.vira[0]:
+                    self.direcao = 0
+                    self.coord_x += self.velocidade
+                elif self.vira[3]:
+                    self.direcao = 3
+                    self.coord_y += self.velocidade
+                elif self.vira[2]:
+                    self.direcao = 2
+                    self.coord_y -= self.velocidade   
+                elif self.vira[0]:
+                    self.direcao = 0
+                    self.coord_x += self.velocidade
+            elif self.vira[1]:
+                self.coord_x -= self.velocidade
+        elif self.direcao == 2:
+            if self.alvo[0] < self.coord_x and self.vira[1]:
+                self.direcao = 1
+                self.coord_x -= self.velocidade
+            elif self.alvo[1] < self.coord_y and self.vira[2]:
+                self.direcao = 2
+                self.coord_y -= self.velocidade
+            elif not self.vira[2]:
+                if self.alvo[0] > self.coord_x and self.vira[0]:
+                    self.direcao = 0
+                    self.coord_x += self.velocidade
+                elif self.alvo[0] < self.coord_x and self.vira[1]:
+                    self.direcao = 1
+                    self.coord_x -= self.velocidade
+                elif self.alvo[1] > self.coord_y and self.vira[3]:
+                    self.direcao = 3
+                    self.coord_y += self.velocidade
+                elif self.vira[1]:
+                    self.direcao = 1
+                    self.coord_x -= self.velocidade
+                elif self.vira[3]:
+                    self.direcao = 3
+                    self.coord_y += self.velocidade
+                elif self.vira[0]:
+                    self.direcao = 0
+                    self.coord_x += self.velocidade
+            elif self.vira[2]:
+                if self.alvo[0] > self.coord_x and self.vira[0]:
+                    self.direcao = 0
+                    self.coord_x += self.velocidade
+                elif self.alvo[0] < self.coord_x and self.vira[1]:
+                    self.direcao = 1
+                    self.coord_x -= self.velocidade
+                else:
+                    self.coord_y -= self.velocidade
+        elif self.direcao == 3:
+            if self.alvo[1] > self.coord_y and self.vira[3]:
+                self.coord_y += self.velocidade
+            elif not self.vira[3]:
+                if self.alvo[0] > self.coord_x and self.vira[0]:
+                    self.direcao = 0
+                    self.coord_x += self.velocidade
+                elif self.alvo[0] < self.coord_x and self.vira[1]:
+                    self.direcao = 1
+                    self.coord_x -= self.velocidade
+                elif self.alvo[1] < self.coord_y and self.vira[2]:
+                    self.direcao = 2
+                    self.coord_y -= self.velocidade
+                elif self.vira[2]:
+                    self.direcao = 2
+                    self.coord_y -= self.velocidade
+                elif self.vira[1]:
+                    self.direcao = 1
+                    self.coord_x -= self.velocidade
+                elif self.vira[0]:
+                    self.direcao = 0
+                    self.coord_x += self.velocidade
+            elif self.vira[3]:
+                if self.alvo[0] > self.coord_x and self.vira[0]:
+                    self.direcao = 0
+                    self.coord_x += self.velocidade
+                elif self.alvo[0] < self.coord_x and self.vira[1]:
+                    self.direcao = 1
+                    self.coord_x -= self.velocidade
+                else:
+                    self.coord_y += self.velocidade
+                    
+
+        if self.coord_x > largura:
+            self.coord_x = -23
+        elif self.coord_x < -25:
+            self.coord_x = 410
+
+        return self.coord_x, self.coord_y, self.direcao
 
     def clyde_movimento(self):
         if self.direcao == 0:
@@ -318,6 +679,8 @@ class Fantasma:
 
         return self.coord_x, self.coord_y, self.direcao
 
+
+
 def busca_alvos(blink_x, blink_y, ink_x, ink_y, pink_x, pink_y, clyd_x, clyd_y):
     if jogador_x < 210:
         fuga_x = 420
@@ -332,23 +695,43 @@ def busca_alvos(blink_x, blink_y, ink_x, ink_y, pink_x, pink_y, clyd_x, clyd_y):
 
     if powerup:
 
-        if not blinky.morto:
+        if not blinky.morto and not fantasmas_mortos[0]:
             blink_alvo = (fuga_x, fuga_y)
+        elif not blinky_morto and fantasmas_mortos[0]:
+            if 160 < blink_x < 362 and 160 < blink_y < 250:
+                blink_alvo = (211, 50)
+            else:
+                blink_alvo = (jogador_x, jogador_y)
         else:
             blink_alvo= local_retorno
 
-        if not inky.morto:
+        if not inky.morto and not fantasmas_mortos[1]:
             ink_alvo = (fuga_x, jogador_y)
+        elif not inky_morto and fantasmas_mortos[0]:
+            if 160 < ink_x < 362 and 160 < ink_y < 250:
+                ink_alvo = (211, 50)
+            else:
+                ink_alvo = (jogador_x, jogador_y)
         else:
             ink_alvo = local_retorno
 
         if not pinky.morto:
             pink_alvo = (jogador_x, fuga_y)
+        elif not pinky_morto and fantasmas_mortos[0]:
+            if 160 < pink_x < 362 and 160 < pink_y < 250:
+                pink_alvo = (211, 50)
+            else:
+                pink_alvo = (jogador_x, jogador_y)
         else:
             pink_alvo = local_retorno
 
         if not clyde.morto:
             clyd_alvo = (450, 450)
+        elif not clyde_morto and fantasmas_mortos[0]:
+            if 160 < clyde_x < 362 and 160 < clyde_y < 250:
+                clyd_alvo = (211, 50)
+            else:
+                clyd_alvo = (jogador_x, jogador_y)
         else:
             clyd_alvo = local_retorno
 
@@ -359,24 +742,32 @@ def busca_alvos(blink_x, blink_y, ink_x, ink_y, pink_x, pink_y, clyd_x, clyd_y):
                 blink_alvo = (211, 50)
             else:
                 blink_alvo = (jogador_x, jogador_y)
+        else:
+            blink_alvo = local_retorno
 
         if not inky.morto:
             if 160 < ink_x < 362 and 160 < ink_y < 250:
                 ink_alvo = (211, 50)
             else:
                 ink_alvo = (jogador_x, jogador_y)
+        else:
+            ink_alvo = local_retorno
 
         if not pinky.morto:
             if 160 < pink_x < 362 and 160 < pink_y < 250:
                 pink_alvo = (211, 50)
             else:
                 pink_alvo = (jogador_x, jogador_y)
+        else:
+            pink_alvo = local_retorno
 
         if not clyde.morto:
             if 160 < clyd_x < 362 and 160 < clyd_y < 250:
                 clyd_alvo = (211, 50)
             else:
                 clyd_alvo = (jogador_x, jogador_y)
+        else:
+            clyd_alvo = local_retorno
 
     return [blink_alvo, ink_alvo, pink_alvo, clyd_alvo]
 
@@ -385,24 +776,68 @@ rodando = True
 while rodando:
     temporizador.tick(fps)
     tela.fill('black')
-    desenha_mapa(altura, largura, tela, flicker)
+    desenha_mapa(altura, largura, tela, flicker, level)
+    centro_x = jogador_x + 10
+    centro_y = jogador_y + 10
+    if powerup:
+        velocidade_fantasma = [1, 1, 1, 1]
+    else:
+        velocidade_fantasma = [2, 2, 2, 2]
+    
+    if fantasmas_mortos[0]:
+        velocidade_fantasma[0] = 2
+    if fantasmas_mortos[1]:
+        velocidade_fantasma[1] = 2
+    if fantasmas_mortos[2]:
+        velocidade_fantasma[2] = 2
+    if fantasmas_mortos[3]:
+        velocidade_fantasma[3] = 2
+        
+    if blinky_morto:
+        velocidade_fantasma[0] = 4
+    if inky_morto:
+        velocidade_fantasma[1] = 4
+    if pinky_morto:
+        velocidade_fantasma[2] = 4
+    if clyde_morto:
+        velocidade_fantasma[3] = 4
+
+    jogo_ganho = True
+    for i in range(len(level)):
+        if 1 in level[i] or 2 in level[i]:
+            jogo_ganho = False
+
+    circulo_jogador = pygame.draw.circle(tela, 'black', (centro_x, centro_y), 10, 1)
+
     desenha_jogador(direcao, tela, contador, jogador_x, jogador_y)
+    
+    blinky = Fantasma(blinky_x, blinky_y, alvos[0], velocidade_fantasma[0], img_blinky, direcao_blinky, blinky_morto, blinky_caixa, 0)
+    inky = Fantasma(inky_x, inky_y, alvos[1], velocidade_fantasma[1], img_inky, direcao_inky, inky_morto, inky_caixa, 1)
+    pinky = Fantasma(pinky_x, pinky_y, alvos[2], velocidade_fantasma[2], img_pinky, direcao_pinky, pinky_morto, pinky_caixa, 0)
+    clyde = Fantasma(clyde_x, clyde_y, alvos[0], velocidade_fantasma[3], img_clyde, direcao_clyde, clyde_morto, clyde_caixa, 1)
 
-    blinky = Fantasma(blinky_x, blinky_y, alvos[0], velocidade_fantasma, img_blinky, direcao_blinky, blinky_morto, blinky_caixa, 0)
-    inky = Fantasma(inky_x, inky_y, alvos[1], velocidade_fantasma, img_inky, direcao_inky, inky_morto, inky_caixa, 1)
-    pinky = Fantasma(pinky_x, pinky_y, alvos[2], velocidade_fantasma, img_pinky, direcao_pinky, pinky_morto, pinky_caixa, 0)
-    clyde = Fantasma(clyde_x, clyde_y, alvos[0], velocidade_fantasma, img_clyde, direcao_clyde, clyde_morto, clyde_caixa, 1)
-
-    desenha_pontuacao(fonte, pontuacao, tela, powerup, vidas)
+    desenha_pontuacao(fonte, pontuacao, tela, powerup, vidas, fim_de_jogo, jogo_ganho)
     alvos = busca_alvos(blinky_x, blinky_y, inky_x, inky_y, pinky_x, pinky_y, clyde_x, clyde_y)
     centro_x = jogador_x + 10
     centro_y = jogador_y + 10
     pode_virar = verifica_posicao(centro_x, centro_y, largura, altura, direcao, level)
     if movendo:
         jogador_x, jogador_y = mover_jogador(direcao, jogador_x, jogador_y, pode_virar, velocidade)
-        blinky_x, blinky_y, direcao_blinky = blinky.clyde_movimento()
-        pinky_x, pinky_y, direcao_pinky = pinky.clyde_movimento()
-        inky_x, inky_y, direcao_inky = inky.clyde_movimento()
+        if not blinky_morto and not blinky.na_caixa:
+            blinky_x, blinky_y, direcao_blinky = blinky.blinky_movimento()
+        else:
+            blinky_x, blinky_y, direcao_blinky = blinky.clyde_movimento()
+
+        if not pinky.morto and not pinky.na_caixa:
+            pinky_x, pinky_y, direcao_pinky = pinky.pinky_movimento()
+        else:
+            pinky_x, pinky_y, direcao_pinky = pinky.clyde_movimento()
+        
+        if not inky.morto and not inky.na_caixa:
+            inky_x, inky_y, direcao_inky = inky.inky_movimento()
+        else:
+            inky_x, inky_y, direcao_inky = inky.clyde_movimento()
+        
         clyde_x, clyde_y, direcao_clyde = clyde.clyde_movimento()
     pontuacao, powerup, contador_power, fantasmas_mortos = verifica_colisao(altura, largura, jogador_x, level, centro_x, centro_y, pontuacao, powerup, contador_power, fantasmas_mortos)
 
@@ -421,11 +856,220 @@ while rodando:
         powerup = False
         fantasmas_mortos = [False, False, False]
 
-    if contador_inicio < 180:
+    if contador_inicio < 180 and not fim_de_jogo and not jogo_ganho:
         movendo = False
         contador_inicio += 1
     else:
         movendo = True
+
+
+    if not powerup:
+        if (circulo_jogador.colliderect(blinky.rect) and not blinky.morto) or \
+                (circulo_jogador.colliderect(inky.rect) and not inky.morto) or \
+                (circulo_jogador.colliderect(pinky.rect) and not pinky.morto) or \
+                (circulo_jogador.colliderect(clyde.rect) and not clyde.morto):
+            if vidas > 0:
+                vidas -= 1
+                powerup = False
+                contador_power = 0
+                contador_inicio = 0
+                jogador_x = 220
+                jogador_y = 330
+                direcao = 0
+                comando_direcao = 0
+
+                blinky_x = 25
+                blinky_y = 25
+                direcao_blinky = 0
+
+                inky_x = 200
+                inky_y = 195
+                direcao_inky = 2
+
+                pinky_x = 200
+                pinky_y = 218
+                direcao_pinky = 2
+
+                clyde_x = 200
+                clyde_y = 218
+                direcao_clyde = 2
+
+                fantasmas_mortos = [False, False, False, False]
+               
+                blinky_morto = False
+                inky_morto = False
+                clyde_morto = False
+                pinky_morto = False
+            else:
+                fim_de_jogo = True
+                movendo = False
+                contador_inicio = 0
+
+    if powerup and circulo_jogador.colliderect(blinky.rect) and not blinky.morto and not fantasmas_mortos[0]:
+        blinky_morto = True
+        fantasmas_mortos[0] = True
+        pontuacao += 2 ** fantasmas_mortos.count(True) * 100
+    if powerup and circulo_jogador.colliderect(inky.rect) and not inky.morto and not fantasmas_mortos[1]:
+        inky_morto = True
+        fantasmas_mortos[1] = True
+        pontuacao += 2 ** fantasmas_mortos.count(True)* 100
+    if powerup and circulo_jogador.colliderect(pinky.rect) and not pinky.morto and not fantasmas_mortos[2]:
+        pinky_morto = True
+        fantasmas_mortos[2] = True
+        pontuacao += 2 ** fantasmas_mortos.count(True) * 100
+    if powerup and circulo_jogador.colliderect(clyde.rect) and not clyde.morto and not fantasmas_mortos[3]:
+        clyde_morto = True
+        fantasmas_mortos[3] = True
+        pontuacao += 2 ** fantasmas_mortos.count(True) * 100
+
+    if powerup and circulo_jogador.colliderect(blinky.rect) and fantasmas_mortos[0]:
+        if vidas > 0:
+                vidas -= 1
+                powerup = False
+                contador_power = 0
+                contador_inicio = 0
+                jogador_x = 220
+                jogador_y = 330
+                direcao = 0
+                comando_direcao = 0
+
+                blinky_x = 25
+                blinky_y = 25
+                direcao_blinky = 0
+
+                inky_x = 200
+                inky_y = 195
+                direcao_inky = 2
+
+                pinky_x = 200
+                pinky_y = 218
+                direcao_pinky = 2
+
+                clyde_x = 200
+                clyde_y = 218
+                direcao_clyde = 2
+
+                fantasmas_mortos = [False, False, False, False]
+               
+                blinky_morto = False
+                inky_morto = False
+                clyde_morto = False
+                pinky_morto = False
+        else:
+            fim_de_jogo = True
+            movendo = False
+            contador_inicio = 0
+    if powerup and circulo_jogador.colliderect(blinky.rect) and fantasmas_mortos[1]:
+        if vidas > 0:
+                vidas -= 1
+                powerup = False
+                contador_power = 0
+                contador_inicio = 0
+                jogador_x = 220
+                jogador_y = 330
+                direcao = 0
+                comando_direcao = 0
+
+                blinky_x = 25
+                blinky_y = 25
+                direcao_blinky = 0
+
+                inky_x = 200
+                inky_y = 195
+                direcao_inky = 2
+
+                pinky_x = 200
+                pinky_y = 218
+                direcao_pinky = 2
+
+                clyde_x = 200
+                clyde_y = 218
+                direcao_clyde = 2
+
+                fantasmas_mortos = [False, False, False, False]
+               
+                blinky_morto = False
+                inky_morto = False
+                clyde_morto = False
+                pinky_morto = False
+        else:
+            fim_de_jogo = True
+            movendo = False
+            contador_inicio = 0
+    if powerup and circulo_jogador.colliderect(blinky.rect) and fantasmas_mortos[2]:
+        if vidas > 0:
+                vidas -= 1
+                powerup = False
+                contador_power = 0
+                contador_inicio = 0
+                jogador_x = 220
+                jogador_y = 330
+                direcao = 0
+                comando_direcao = 0
+
+                blinky_x = 25
+                blinky_y = 25
+                direcao_blinky = 0
+
+                inky_x = 200
+                inky_y = 195
+                direcao_inky = 2
+
+                pinky_x = 200
+                pinky_y = 218
+                direcao_pinky = 2
+
+                clyde_x = 200
+                clyde_y = 218
+                direcao_clyde = 2
+
+                fantasmas_mortos = [False, False, False, False]
+               
+                blinky_morto = False
+                inky_morto = False
+                clyde_morto = False
+                pinky_morto = False
+        else:
+            fim_de_jogo = True
+            movendo = False
+            contador_inicio = 0
+    if powerup and circulo_jogador.colliderect(blinky.rect) and fantasmas_mortos[3]:
+        if vidas > 0:
+                vidas -= 1
+                powerup = False
+                contador_power = 0
+                contador_inicio = 0
+                jogador_x = 220
+                jogador_y = 330
+                direcao = 0
+                comando_direcao = 0
+
+                blinky_x = 25
+                blinky_y = 25
+                direcao_blinky = 0
+
+                inky_x = 200
+                inky_y = 195
+                direcao_inky = 2
+
+                pinky_x = 200
+                pinky_y = 218
+                direcao_pinky = 2
+
+                clyde_x = 200
+                clyde_y = 218
+                direcao_clyde = 2
+
+                fantasmas_mortos = [False, False, False, False]
+               
+                blinky_morto = False
+                inky_morto = False
+                clyde_morto = False
+                pinky_morto = False
+        else:
+            fim_de_jogo = True
+            movendo = False
+            contador_inicio = 0
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -439,6 +1083,45 @@ while rodando:
                 comando_direcao = 2
             if event.key == pygame.K_DOWN:
                 comando_direcao = 3
+            if event.key == pygame.K_SPACE and (fim_de_jogo or jogo_ganho):
+                vidas -= 1
+                powerup = False
+                contador_power = 0
+                contador_inicio = 0
+                jogador_x = 220
+                jogador_y = 330
+                direcao = 0
+                comando_direcao = 0
+
+                blinky_x = 25
+                blinky_y = 25
+                direcao_blinky = 0
+
+                inky_x = 200
+                inky_y = 195
+                direcao_inky = 2
+
+                pinky_x = 200
+                pinky_y = 218
+                direcao_pinky = 2
+
+                clyde_x = 200
+                clyde_y = 218
+                direcao_clyde = 2
+
+                fantasmas_mortos = [False, False, False, False]
+               
+                blinky_morto = False
+                inky_morto = False
+                clyde_morto = False
+                pinky_morto = False
+
+                pontuacao = 0
+                vidas = 3
+                level = copy.deepcopy(mapa)
+                fim_de_jogo = False
+                jogo_ganho = False
+
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_RIGHT and comando_direcao == 0:
                comando_direcao = direcao
@@ -457,6 +1140,15 @@ while rodando:
         jogador_x = -23
     elif jogador_x < -25:
         jogador_x = 410
+
+    if blinky.na_caixa and blinky.morto:
+        blinky_morto = False
+    if inky.na_caixa and inky.morto:
+        inky_morto = False
+    if pinky.na_caixa and pinky.morto:
+        pinky_morto = False
+    if clyde.na_caixa and clyde.morto:
+        clyde_morto = False
 
     pygame.display.flip()
 
