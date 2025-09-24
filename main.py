@@ -63,7 +63,7 @@ inky_caixa= False
 clyde_caixa = False
 pinky_caixa = False
 
-velocidade_fantasma = [0, 0, 0, 0]
+velocidade_fantasma = [2, 2, 2, 2]
 
 contador_inicio = 0
 movendo = False

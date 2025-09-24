@@ -14,13 +14,13 @@ def desenha_pontuacao(fonte, pontuacao, tela, powerup, vidas, fim_de_jogo, jogo_
     if fim_de_jogo:
         pygame.draw.rect(tela, 'white', [10, 100, 400, 150], 0, 10)
         pygame.draw.rect(tela, 'dark grey', [20, 110, 380, 130], 0, 10)
-        texto_fim_de_jogo = fonte.render('Game Over! Pressione espaço para recomeçar!', True, 'red')
+        texto_fim_de_jogo = fonte.render('Game Over! \nPressione espaço para recomeçar!', True, 'red')
         tela.blit(texto_fim_de_jogo, (40, 170))
 
     if jogo_ganho:
         pygame.draw.rect(tela, 'white', [10, 100, 400, 150], 0, 10)
         pygame.draw.rect(tela, 'dark grey', [20, 110, 380, 130], 0, 10)
-        texto_fim_de_jogo = fonte.render('Parabéns, você venceu! Pressione espaço para recomeçar!', True, 'green')
+        texto_fim_de_jogo = fonte.render('Parabéns, você venceu! \nPressione espaço para recomeçar!', True, 'green')
         tela.blit(texto_fim_de_jogo, (40, 170))
 
 
