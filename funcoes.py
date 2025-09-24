@@ -2,7 +2,7 @@ import pygame
 from mapa import mapa
 from math import pi
 
-def desenha_pontuacao(fonte, pontuacao, tela, powerup, vidas):
+def desenha_pontuacao(fonte, pontuacao, tela, powerup, vidas, fim_de_jogo, jogo_ganho):
     texto_pontuacao = fonte.render(f'Score: {pontuacao}', True, 'white')
     tela.blit(texto_pontuacao, (10,460))
     if powerup:
@@ -10,6 +10,19 @@ def desenha_pontuacao(fonte, pontuacao, tela, powerup, vidas):
         
     for i in range(vidas):
         tela.blit(pygame.transform.scale(imagens_jogador[0], (15, 15)), (350 + i * 20, 458))
+
+    if fim_de_jogo:
+        pygame.draw.rect(tela, 'white', [10, 100, 400, 150], 0, 10)
+        pygame.draw.rect(tela, 'dark grey', [20, 110, 380, 130], 0, 10)
+        texto_fim_de_jogo = fonte.render('Game Over! Pressione espaço para recomeçar!', True, 'red')
+        tela.blit(texto_fim_de_jogo, (40, 170))
+
+    if jogo_ganho:
+        pygame.draw.rect(tela, 'white', [10, 100, 400, 150], 0, 10)
+        pygame.draw.rect(tela, 'dark grey', [20, 110, 380, 130], 0, 10)
+        texto_fim_de_jogo = fonte.render('Parabéns, você venceu! Pressione espaço para recomeçar!', True, 'green')
+        tela.blit(texto_fim_de_jogo, (40, 170))
+
 
 def verifica_colisao(altura, largura, jogador_x, level, centro_x, centro_y, pontuacao, power, contador_power, fantasmas_mortos):
     num1 = altura // 32
@@ -20,12 +33,10 @@ def verifica_colisao(altura, largura, jogador_x, level, centro_x, centro_y, pont
 
         if level[linha][coluna] == 1:
             level[linha][coluna] = 0
-            mapa[linha][coluna] = 0
             pontuacao += 10
 
         if level[linha][coluna] == 2:
             level[linha][coluna] = 0
-            mapa[linha][coluna] = 0
             pontuacao += 50
             power = True
             contador_power = 0
@@ -34,28 +45,28 @@ def verifica_colisao(altura, largura, jogador_x, level, centro_x, centro_y, pont
 
     return pontuacao, power, contador_power, fantasmas_mortos
 
-def desenha_mapa(altura, largura, tela, flicker):
+def desenha_mapa(altura, largura, tela, flicker, mapa_atual):
     num1 = altura // 32
     num2 = largura // 30
-    for i in range(len(mapa)):
-        for j in range(len(mapa[i])):
-            if mapa[i][j] == 1:
+    for i in range(len(mapa_atual)):
+        for j in range(len(mapa_atual[i])):
+            if mapa_atual[i][j] == 1:
                 pygame.draw.circle(tela, 'white', (j * num2 + (0.5 * num2), i * num1 + (0.5 * num1)), 2)
-            if mapa[i][j] == 2 and not flicker:
+            if mapa_atual[i][j] == 2 and not flicker:
                 pygame.draw.circle(tela, 'white', (j * num2 + (0.5 * num2), i * num1 + (0.5 * num1)), 5)
-            if mapa[i][j] == 3:
+            if mapa_atual[i][j] == 3:
                 pygame.draw.line(tela, 'blue', (j * num2 + (0.5 * num2), i * num1), (j * num2 + (0.5 * num2), i * num1 + num1), 3)
-            if mapa[i][j] == 4:
+            if mapa_atual[i][j] == 4:
                 pygame.draw.line(tela, 'blue', (j * num2, i * num1 + (0.5 * num1)), (j * num2 + num2, i * num1 + (0.5 * num1)), 3)
-            if mapa[i][j] == 5:
+            if mapa_atual[i][j] == 5:
                 pygame.draw.arc(tela, 'blue', [(j * num2 - (num2 * 0.4)) - 2, (i * num1 + (0.5 * num1)), num2, num1], 0, pi / 2, 3)
-            if mapa[i][j] == 6:
+            if mapa_atual[i][j] == 6:
                 pygame.draw.arc(tela, 'blue', [(j * num2 + (num2 * 0.5)), (i * num1 + (0.5 * num1)), num2, num1], pi / 2, pi, 3)
-            if mapa[i][j] == 7:
+            if mapa_atual[i][j] == 7:
                 pygame.draw.arc(tela, 'blue', [(j * num2 + (num2 * 0.5)), (i * num1 - (0.4 * num1)), num2, num1], pi, 3 * pi / 2, 3)
-            if mapa[i][j] == 8:
+            if mapa_atual[i][j] == 8:
                 pygame.draw.arc(tela, 'blue', [(j * num2 - (num2 * 0.4)) - 2, (i * num1 - (0.4 * num1)), num2, num1], 3 * pi / 2, 2 * pi, 3)
-            if mapa[i][j] == 9:
+            if mapa_atual[i][j] == 9:
                 pygame.draw.line(tela, 'white', (j * num2, i * num1 + (0.5 * num1)), (j * num2 + num2, i * num1 + (0.5 * num1)), 3)
 
 imagens_jogador = []
