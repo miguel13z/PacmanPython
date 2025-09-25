@@ -2,7 +2,7 @@ import pygame
 from config import *
 
 class Fantasma:
-    def __init__(self, coord_x, coord_y, alvo, velocidade, img, direcao, morto, caixa, id):
+    def __init__(self, coord_x, coord_y, alvo, velocidade, img, direcao, morto, caixa, id, powerup_status, fantasmas_mortos_list):
         self.coord_x = coord_x
         self.coord_y = coord_y
         self.centro_x = self.coord_x + 10
@@ -14,13 +14,17 @@ class Fantasma:
         self.img = img
         self.na_caixa = caixa
         self.id = id
+        
+        self.powerup_ativo = powerup_status
+        self.lista_fantasmas_mortos = fantasmas_mortos_list
+
         self.vira, self.na_caixa = self.verifica_colisao()
         self.rect = self.desenha()
 
     def desenha(self):
-        if (not powerup and not self.morto) or (fantasmas_mortos[self.id] and powerup and not self.morto):
+        if (not self.powerup_ativo and not self.morto) or (self.lista_fantasmas_mortos[self.id] and self.powerup_ativo and not self.morto):
             tela.blit(self.img, (self.coord_x, self.coord_y))
-        elif powerup and not self.morto and not fantasmas_mortos[self.id]:
+        elif self.powerup_ativo and not self.morto and not self.lista_fantasmas_mortos[self.id]:
             tela.blit(img_spooked, (self.coord_x, self.coord_y))
         else:
             tela.blit(img_dead, (self.coord_x, self.coord_y))

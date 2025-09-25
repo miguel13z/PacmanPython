@@ -5,7 +5,6 @@ from config import *
 from fantasma import Fantasma
 
 pygame.init()
-
 pygame.mixer.init()
 
 som_bolinha = pygame.mixer.Sound('assets/sound/pacman_chomp.wav')
@@ -54,10 +53,10 @@ while rodando:
 
     desenha_jogador(direcao, tela, contador, jogador_x, jogador_y)
     
-    blinky = Fantasma(blinky_x, blinky_y, alvos[0], velocidade_fantasma[0], img_blinky, direcao_blinky, blinky_morto, blinky_caixa, 0)
-    inky = Fantasma(inky_x, inky_y, alvos[1], velocidade_fantasma[1], img_inky, direcao_inky, inky_morto, inky_caixa, 1)
-    pinky = Fantasma(pinky_x, pinky_y, alvos[2], velocidade_fantasma[2], img_pinky, direcao_pinky, pinky_morto, pinky_caixa, 0)
-    clyde = Fantasma(clyde_x, clyde_y, alvos[0], velocidade_fantasma[3], img_clyde, direcao_clyde, clyde_morto, clyde_caixa, 1)
+    blinky = Fantasma(blinky_x, blinky_y, alvos[0], velocidade_fantasma[0], img_blinky, direcao_blinky, blinky_morto, blinky_caixa, 0, powerup, fantasmas_mortos)
+    inky = Fantasma(inky_x, inky_y, alvos[1], velocidade_fantasma[1], img_inky, direcao_inky, inky_morto, inky_caixa, 1, powerup, fantasmas_mortos)
+    pinky = Fantasma(pinky_x, pinky_y, alvos[2], velocidade_fantasma[2], img_pinky, direcao_pinky, pinky_morto, pinky_caixa, 0, powerup, fantasmas_mortos)
+    clyde = Fantasma(clyde_x, clyde_y, alvos[0], velocidade_fantasma[3], img_clyde, direcao_clyde, clyde_morto, clyde_caixa, 1, powerup, fantasmas_mortos)
 
     desenha_pontuacao(fonte, pontuacao, tela, powerup, vidas, fim_de_jogo, jogo_ganho)
     alvos = busca_alvos(jogador_x, jogador_y, powerup, blinky, inky, pinky, clyde, fantasmas_mortos)
