@@ -4,6 +4,13 @@ from funcoes import desenha_mapa, desenha_jogador, verifica_posicao, mover_jogad
 from mapa import mapa
 
 pygame.init()
+pygame.mixer.init()
+
+som_bolinha = pygame.mixer.Sound('sound/pacman_chomp.wav')
+som_morte = pygame.mixer.Sound('sound/pacman_death.wav')
+som_comeco = pygame.mixer.Sound('sound/pacman_beginning.wav')
+som_comer_fantasma = pygame.mixer.Sound('sound/pacman_eatghost.wav')
+som_powerup = pygame.mixer.Sound('sound/pacman_powerup.mp3')
 
 largura = 420
 altura = 475
@@ -742,6 +749,7 @@ def busca_alvos(blink_x, blink_y, ink_x, ink_y, pink_x, pink_y, clyd_x, clyd_y):
 
     return [blink_alvo, ink_alvo, pink_alvo, clyd_alvo]
 
+som_comeco.play()
 rodando = True
 while rodando:
     temporizador.tick(fps)
@@ -809,7 +817,13 @@ while rodando:
             inky_x, inky_y, direcao_inky = inky.clyde_movimento()
         
         clyde_x, clyde_y, direcao_clyde = clyde.clyde_movimento()
-    pontuacao, powerup, contador_power, fantasmas_mortos = verifica_colisao(altura, largura, jogador_x, level, centro_x, centro_y, pontuacao, powerup, contador_power, fantasmas_mortos)
+    pontuacao, powerup, contador_power, fantasmas_mortos, tocar_som_comer, tocar_som_powerup = verifica_colisao(altura, largura, jogador_x, level, centro_x, centro_y, pontuacao, powerup, contador_power, fantasmas_mortos)
+
+    if tocar_som_comer:
+        if not pygame.mixer.get_busy():
+            som_bolinha.play()
+    if tocar_som_powerup:
+        som_powerup.play()
 
     if contador < 19:
         contador += 1
@@ -819,19 +833,18 @@ while rodando:
         contador = 0
         flicker = True
 
-    if powerup and contador_power < 600:
+    if powerup and contador_power < 300:
         contador_power += 1
-    elif powerup and contador_power >= 600:
+    elif powerup and contador_power >= 300:
         contador_power = 0
         powerup = False
         fantasmas_mortos = [False, False, False, False]
 
-    if contador_inicio < 180 and not fim_de_jogo and not jogo_ganho:
+    if contador_inicio < 240 and not fim_de_jogo and not jogo_ganho:
         movendo = False
         contador_inicio += 1
     else:
         movendo = True
-
 
     if not powerup:
         if (circulo_jogador.colliderect(blinky.rect) and not blinky.morto) or \
@@ -839,6 +852,7 @@ while rodando:
                 (circulo_jogador.colliderect(pinky.rect) and not pinky.morto) or \
                 (circulo_jogador.colliderect(clyde.rect) and not clyde.morto):
             if vidas > 0:
+                som_morte.play()
                 vidas -= 1
                 powerup = False
                 contador_power = 0
@@ -883,18 +897,22 @@ while rodando:
         blinky_morto = True
         fantasmas_mortos[0] = True
         pontuacao += 2 ** fantasmas_mortos.count(True) * 100
+        som_comer_fantasma.play()
     if powerup and circulo_jogador.colliderect(inky.rect) and not inky.morto and not fantasmas_mortos[1]:
         inky_morto = True
         fantasmas_mortos[1] = True
         pontuacao += 2 ** fantasmas_mortos.count(True)* 100
+        som_comer_fantasma.play()
     if powerup and circulo_jogador.colliderect(pinky.rect) and not pinky.morto and not fantasmas_mortos[2]:
         pinky_morto = True
         fantasmas_mortos[2] = True
         pontuacao += 2 ** fantasmas_mortos.count(True) * 100
+        som_comer_fantasma.play()
     if powerup and circulo_jogador.colliderect(clyde.rect) and not clyde.morto and not fantasmas_mortos[3]:
         clyde_morto = True
         fantasmas_mortos[3] = True
         pontuacao += 2 ** fantasmas_mortos.count(True) * 100
+        som_comer_fantasma.play()
 
     if powerup and circulo_jogador.colliderect(blinky.rect) and fantasmas_mortos[0]:
         if vidas > 0:

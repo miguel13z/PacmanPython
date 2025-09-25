@@ -1,4 +1,5 @@
 import pygame
+import time
 from mapa import mapa
 from math import pi
 
@@ -26,6 +27,8 @@ def desenha_pontuacao(fonte, pontuacao, tela, powerup, vidas, fim_de_jogo, jogo_
 def verifica_colisao(altura, largura, jogador_x, level, centro_x, centro_y, pontuacao, power, contador_power, fantasmas_mortos):
     num1 = altura // 32
     num2 = largura // 30
+    som_comer = False
+    som_powerup = False
     if 0 < jogador_x < 400:
         linha = centro_y // num1
         coluna = centro_x // num2
@@ -33,6 +36,7 @@ def verifica_colisao(altura, largura, jogador_x, level, centro_x, centro_y, pont
         if level[linha][coluna] == 1:
             level[linha][coluna] = 0
             pontuacao += 10
+            som_comer = True
 
         if level[linha][coluna] == 2:
             level[linha][coluna] = 0
@@ -40,9 +44,10 @@ def verifica_colisao(altura, largura, jogador_x, level, centro_x, centro_y, pont
             power = True
             contador_power = 0
             fantasmas_mortos = [False, False, False, False]
+            som_powerup = True
 
 
-    return pontuacao, power, contador_power, fantasmas_mortos
+    return pontuacao, power, contador_power, fantasmas_mortos, som_comer, som_powerup
 
 def desenha_mapa(altura, largura, tela, flicker, mapa_atual):
     num1 = altura // 32
