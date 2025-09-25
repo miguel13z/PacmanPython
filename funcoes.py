@@ -14,13 +14,13 @@ def desenha_pontuacao(fonte, pontuacao, tela, powerup, vidas, fim_de_jogo, jogo_
     if fim_de_jogo:
         pygame.draw.rect(tela, 'white', [10, 100, 400, 150], 0, 10)
         pygame.draw.rect(tela, 'dark grey', [20, 110, 380, 130], 0, 10)
-        texto_fim_de_jogo = fonte.render('Game Over! Pressione espaço para recomeçar!', True, 'red')
+        texto_fim_de_jogo = fonte.render('Game Over! \nPressione espaço para recomeçar!', True, 'red')
         tela.blit(texto_fim_de_jogo, (40, 170))
 
     if jogo_ganho:
         pygame.draw.rect(tela, 'white', [10, 100, 400, 150], 0, 10)
         pygame.draw.rect(tela, 'dark grey', [20, 110, 380, 130], 0, 10)
-        texto_fim_de_jogo = fonte.render('Parabéns, você venceu! Pressione espaço para recomeçar!', True, 'green')
+        texto_fim_de_jogo = fonte.render('Parabéns, você venceu! \nPressione espaço para recomeçar!', True, 'green')
         tela.blit(texto_fim_de_jogo, (40, 170))
 
 def verifica_colisao(altura, largura, jogador_x, level, centro_x, centro_y, pontuacao, power, contador_power, fantasmas_mortos):
@@ -147,3 +147,80 @@ def mover_jogador(direcao, jogador_x, jogador_y, pode_virar, velocidade):
         jogador_y += velocidade
 
     return jogador_x, jogador_y
+
+def busca_alvos(blinky, inky, pinky, clyde, jogador_x, jogador_y, fantasmas_mortos, powerup):
+    if jogador_x < 210:
+        fuga_x = 420
+    else:
+        fuga_x = 0
+    if jogador_y < 210:
+        fuga_y = 420
+    else:
+        fuga_y = 0
+
+    local_retorno = (200, 200)
+    saida_caixa = (211, 50)
+
+    if powerup:
+        if not blinky.morto and not fantasmas_mortos[0]:
+            blink_alvo = (fuga_x, fuga_y)
+        elif blinky.na_caixa:
+            blink_alvo = saida_caixa
+        else:
+            blink_alvo = local_retorno
+
+        if not inky.morto and not fantasmas_mortos[1]:
+            ink_alvo = (fuga_x, jogador_y)
+        elif inky.na_caixa:
+            ink_alvo = saida_caixa
+        else:
+            ink_alvo = local_retorno
+
+        if not pinky.morto and not fantasmas_mortos[2]:
+            pink_alvo = (jogador_x, fuga_y)
+        elif pinky.na_caixa:
+            pink_alvo = saida_caixa
+        else:
+            pink_alvo = local_retorno
+
+        if not clyde.morto and not fantasmas_mortos[3]:
+            clyd_alvo = (450, 450)
+        elif clyde.na_caixa:
+            clyd_alvo = saida_caixa
+        else:
+            clyd_alvo = local_retorno
+
+    else:
+        if not blinky.morto:
+            if blinky.na_caixa:
+                blink_alvo = saida_caixa
+            else:
+                blink_alvo = (jogador_x, jogador_y)
+        else:
+            blink_alvo = local_retorno
+
+        if not inky.morto:
+            if inky.na_caixa:
+                ink_alvo = saida_caixa
+            else:
+                ink_alvo = (jogador_x, jogador_y)
+        else:
+            ink_alvo = local_retorno
+
+        if not pinky.morto:
+            if pinky.na_caixa:
+                pink_alvo = saida_caixa
+            else:
+                pink_alvo = (jogador_x, jogador_y)
+        else:
+            pink_alvo = local_retorno
+
+        if not clyde.morto:
+            if clyde.na_caixa:
+                clyd_alvo = saida_caixa
+            else:
+                clyd_alvo = (jogador_x, jogador_y)
+        else:
+            clyd_alvo = local_retorno
+
+    return [blink_alvo, ink_alvo, pink_alvo, clyd_alvo]
