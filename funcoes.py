@@ -1,5 +1,5 @@
 import pygame
-from mapa import mapa
+from config import *
 from math import pi
 
 def desenha_pontuacao(fonte, pontuacao, tela, powerup, vidas, fim_de_jogo, jogo_ganho):
@@ -26,6 +26,8 @@ def desenha_pontuacao(fonte, pontuacao, tela, powerup, vidas, fim_de_jogo, jogo_
 def verifica_colisao(altura, largura, jogador_x, level, centro_x, centro_y, pontuacao, power, contador_power, fantasmas_mortos):
     num1 = altura // 32
     num2 = largura // 30
+    som_comer = False
+    som_powerup = False
     if 0 < jogador_x < 400:
         linha = centro_y // num1
         coluna = centro_x // num2
@@ -33,6 +35,7 @@ def verifica_colisao(altura, largura, jogador_x, level, centro_x, centro_y, pont
         if level[linha][coluna] == 1:
             level[linha][coluna] = 0
             pontuacao += 10
+            som_comer = True
 
         if level[linha][coluna] == 2:
             level[linha][coluna] = 0
@@ -40,9 +43,10 @@ def verifica_colisao(altura, largura, jogador_x, level, centro_x, centro_y, pont
             power = True
             contador_power = 0
             fantasmas_mortos = [False, False, False, False]
+            som_powerup = True
 
 
-    return pontuacao, power, contador_power, fantasmas_mortos
+    return pontuacao, power, contador_power, fantasmas_mortos, som_comer, som_powerup
 
 def desenha_mapa(altura, largura, tela, flicker, mapa_atual):
     num1 = altura // 32
@@ -70,7 +74,7 @@ def desenha_mapa(altura, largura, tela, flicker, mapa_atual):
 
 imagens_jogador = []
 for i in range(1, 5):
-    imagens_jogador.append(pygame.transform.scale(pygame.image.load(f'img/jogador/{i}.png'), (20, 20)))
+    imagens_jogador.append(pygame.transform.scale(pygame.image.load(f'assets/img/jogador/{i}.png'), (20, 20)))
 
 def desenha_jogador(direcao, tela, contador, jogador_x, jogador_y):
     if direcao == 0:
@@ -190,6 +194,82 @@ def busca_alvos(blinky, inky, pinky, clyde, jogador_x, jogador_y, fantasmas_mort
         else:
             clyd_alvo = local_retorno
 
+    else:
+        if not blinky.morto:
+            if blinky.na_caixa:
+                blink_alvo = saida_caixa
+            else:
+                blink_alvo = (jogador_x, jogador_y)
+        else:
+            blink_alvo = local_retorno
+
+        if not inky.morto:
+            if inky.na_caixa:
+                ink_alvo = saida_caixa
+            else:
+                ink_alvo = (jogador_x, jogador_y)
+        else:
+            ink_alvo = local_retorno
+
+        if not pinky.morto:
+            if pinky.na_caixa:
+                pink_alvo = saida_caixa
+            else:
+                pink_alvo = (jogador_x, jogador_y)
+        else:
+            pink_alvo = local_retorno
+
+        if not clyde.morto:
+            if clyde.na_caixa:
+                clyd_alvo = saida_caixa
+            else:
+                clyd_alvo = (jogador_x, jogador_y)
+        else:
+            clyd_alvo = local_retorno
+
+    return [blink_alvo, ink_alvo, pink_alvo, clyd_alvo]
+
+def busca_alvos(jogador_x, jogador_y, powerup, blinky, inky, pinky, clyde, fantasmas_mortos):
+    if jogador_x < 210:
+        fuga_x = 420
+    else:
+        fuga_x = 0
+    if jogador_y < 210:
+        fuga_y = 420
+    else:
+        fuga_y = 0
+
+    local_retorno = (200, 200)
+    saida_caixa = (211, 50)
+
+    if powerup:
+        if not blinky.morto and not fantasmas_mortos[0]:
+            blink_alvo = (fuga_x, fuga_y)
+        elif blinky.na_caixa:
+            blink_alvo = saida_caixa
+        else:
+            blink_alvo = local_retorno
+
+        if not inky.morto and not fantasmas_mortos[1]:
+            ink_alvo = (fuga_x, jogador_y)
+        elif inky.na_caixa:
+            ink_alvo = saida_caixa
+        else:
+            ink_alvo = local_retorno
+
+        if not pinky.morto and not fantasmas_mortos[2]:
+            pink_alvo = (jogador_x, fuga_y)
+        elif pinky.na_caixa:
+            pink_alvo = saida_caixa
+        else:
+            pink_alvo = local_retorno
+
+        if not clyde.morto and not fantasmas_mortos[3]:
+            clyd_alvo = (450, 450)
+        elif clyde.na_caixa:
+            clyd_alvo = saida_caixa
+        else:
+            clyd_alvo = local_retorno
     else:
         if not blinky.morto:
             if blinky.na_caixa:
