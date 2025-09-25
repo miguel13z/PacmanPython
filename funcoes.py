@@ -75,7 +75,7 @@ def desenha_mapa(altura, largura, tela, flicker, mapa_atual):
 
 imagens_jogador = []
 for i in range(1, 5):
-    imagens_jogador.append(pygame.transform.scale(pygame.image.load(f'img/jogador/{i}.png'), (20, 20)))
+    imagens_jogador.append(pygame.transform.scale(pygame.image.load(f'assets/img/jogador/{i}.png'), (20, 20)))
 
 def desenha_jogador(direcao, tela, contador, jogador_x, jogador_y):
     if direcao == 0:
@@ -229,3 +229,4 @@ def busca_alvos(blinky, inky, pinky, clyde, jogador_x, jogador_y, fantasmas_mort
             clyd_alvo = local_retorno
 
     return [blink_alvo, ink_alvo, pink_alvo, clyd_alvo]
+

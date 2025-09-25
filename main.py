@@ -6,26 +6,26 @@ from mapa import mapa
 pygame.init()
 pygame.mixer.init()
 
-som_bolinha = pygame.mixer.Sound('sound/pacman_chomp.wav')
-som_morte = pygame.mixer.Sound('sound/pacman_death.wav')
-som_comeco = pygame.mixer.Sound('sound/pacman_beginning.wav')
-som_comer_fantasma = pygame.mixer.Sound('sound/pacman_eatghost.wav')
-som_powerup = pygame.mixer.Sound('sound/pacman_powerup.mp3')
+som_bolinha = pygame.mixer.Sound('assets/sound/pacman_chomp.wav')
+som_morte = pygame.mixer.Sound('assets/sound/pacman_death.wav')
+som_comeco = pygame.mixer.Sound('assets/sound/pacman_beginning.wav')
+som_comer_fantasma = pygame.mixer.Sound('assets/sound/pacman_eatghost.wav')
+som_powerup = pygame.mixer.Sound('assets/sound/pacman_powerup.wav')
 
-largura = 420
-altura = 475
-tela = pygame.display.set_mode((largura, altura))
+LARGURA = 420
+ALTURA = 475
+tela = pygame.display.set_mode((LARGURA, ALTURA))
 temporizador = pygame.time.Clock()
 fps = 60
 fonte = pygame.font.Font('freesansbold.ttf', 15)
 level = copy.deepcopy(mapa)
 
-img_blinky = pygame.transform.scale(pygame.image.load(f'img/fantasmas/red.png'), (20, 20))
-img_clyde = pygame.transform.scale(pygame.image.load(f'img/fantasmas/orange.png'), (20, 20))
-img_pinky = pygame.transform.scale(pygame.image.load(f'img/fantasmas/pink.png'), (20, 20))
-img_inky = pygame.transform.scale(pygame.image.load(f'img/fantasmas/blue.png'), (20, 20))
-img_spooked = pygame.transform.scale(pygame.image.load(f'img/fantasmas/powerup.png'), (20, 20))
-img_dead = pygame.transform.scale(pygame.image.load(f'img/fantasmas/dead.png'), (20, 20))
+img_blinky = pygame.transform.scale(pygame.image.load(f'assets/img/fantasmas/red.png'), (20, 20))
+img_clyde = pygame.transform.scale(pygame.image.load(f'assets/img/fantasmas/orange.png'), (20, 20))
+img_pinky = pygame.transform.scale(pygame.image.load(f'assets/img/fantasmas/pink.png'), (20, 20))
+img_inky = pygame.transform.scale(pygame.image.load(f'assets/img/fantasmas/blue.png'), (20, 20))
+img_spooked = pygame.transform.scale(pygame.image.load(f'assets/img/fantasmas/powerup.png'), (20, 20))
+img_dead = pygame.transform.scale(pygame.image.load(f'assets/img/fantasmas/dead.png'), (20, 20))
 
 jogador_x = 203
 jogador_y = 335
@@ -107,8 +107,8 @@ class Fantasma:
         return fantasma_rect
     
     def verifica_colisao(self):
-        num1 = altura // 32
-        num2 = largura // 30
+        num1 = ALTURA // 32
+        num2 = LARGURA // 30
         num3 = num2 // 2
         self.vira = [False, False, False, False]
         if 0 < self.centro_x // num2 < 29:
@@ -319,7 +319,7 @@ class Fantasma:
                 else:
                     self.coord_y += self.velocidade
 
-        if self.coord_x > largura:
+        if self.coord_x > LARGURA:
             self.coord_x = -23
         elif self.coord_x < -25:
             self.coord_x = 410
@@ -423,7 +423,7 @@ class Fantasma:
                     self.coord_x -= self.velocidade
             elif self.vira[3]:
                 self.coord_y += self.velocidade
-        if self.coord_x > largura:
+        if self.coord_x > LARGURA:
             self.coord_x = -23
         elif self.coord_x < -25:
             self.coord_x = 410
@@ -543,7 +543,7 @@ class Fantasma:
                     self.coord_x += self.velocidade
             elif self.vira[3]:
                 self.coord_y += self.velocidade
-        if self.coord_x > largura:
+        if self.coord_x > LARGURA:
             self.coord_x = -23
         elif self.coord_x < -25:
             self.coord_x = 410
@@ -666,13 +666,13 @@ class Fantasma:
                     self.coord_x -= self.velocidade
                 else:
                     self.coord_y += self.velocidade
-        if self.coord_x > largura:
+        if self.coord_x > LARGURA:
             self.coord_x = -23
         elif self.coord_x < -25:
             self.coord_x = 410
         return self.coord_x, self.coord_y, self.direcao
 
-def busca_alvos(blink_x, blink_y, ink_x, ink_y, pink_x, pink_y, clyd_x, clyd_y):
+def busca_alvos():
     if jogador_x < 210:
         fuga_x = 420
     else:
@@ -754,7 +754,7 @@ rodando = True
 while rodando:
     temporizador.tick(fps)
     tela.fill('black')
-    desenha_mapa(altura, largura, tela, flicker, level)
+    desenha_mapa(ALTURA, LARGURA, tela, flicker, level)
     centro_x = jogador_x + 10
     centro_y = jogador_y + 10
     if powerup:
@@ -795,10 +795,10 @@ while rodando:
     clyde = Fantasma(clyde_x, clyde_y, alvos[0], velocidade_fantasma[3], img_clyde, direcao_clyde, clyde_morto, clyde_caixa, 1)
 
     desenha_pontuacao(fonte, pontuacao, tela, powerup, vidas, fim_de_jogo, jogo_ganho)
-    alvos = busca_alvos(blinky_x, blinky_y, inky_x, inky_y, pinky_x, pinky_y, clyde_x, clyde_y)
+    alvos = busca_alvos()
     centro_x = jogador_x + 10
     centro_y = jogador_y + 10
-    pode_virar = verifica_posicao(centro_x, centro_y, largura, altura, direcao, level)
+    pode_virar = verifica_posicao(centro_x, centro_y, LARGURA, ALTURA, direcao, level)
     if movendo:
         jogador_x, jogador_y = mover_jogador(direcao, jogador_x, jogador_y, pode_virar, velocidade)
         if not blinky_morto and not blinky.na_caixa:
@@ -817,7 +817,7 @@ while rodando:
             inky_x, inky_y, direcao_inky = inky.clyde_movimento()
         
         clyde_x, clyde_y, direcao_clyde = clyde.clyde_movimento()
-    pontuacao, powerup, contador_power, fantasmas_mortos, tocar_som_comer, tocar_som_powerup = verifica_colisao(altura, largura, jogador_x, level, centro_x, centro_y, pontuacao, powerup, contador_power, fantasmas_mortos)
+    pontuacao, powerup, contador_power, fantasmas_mortos, tocar_som_comer, tocar_som_powerup = verifica_colisao(ALTURA, LARGURA, jogador_x, level, centro_x, centro_y, pontuacao, powerup, contador_power, fantasmas_mortos)
 
     if tocar_som_comer:
         if not pygame.mixer.get_busy():
@@ -914,171 +914,6 @@ while rodando:
         pontuacao += 2 ** fantasmas_mortos.count(True) * 100
         som_comer_fantasma.play()
 
-    if powerup and circulo_jogador.colliderect(blinky.rect) and fantasmas_mortos[0]:
-        if vidas > 0:
-                vidas -= 1
-                powerup = False
-                contador_power = 0
-                contador_inicio = 0
-                jogador_x = 200
-                jogador_y = 335
-                direcao = 0
-                comando_direcao = 0
-
-                jogador_x = 203
-                jogador_y = 335
-                direcao = 0
-
-                blinky_x = 200
-                blinky_y = 165
-                direcao_blinky = 0
-
-                inky_x = 175
-                inky_y = 208
-                direcao_inky = 2
-
-                pinky_x = 225
-                pinky_y = 208
-                direcao_pinky = 2
-
-                clyde_x = 200
-                clyde_y = 208
-                direcao_clyde = 2
-
-                fantasmas_mortos = [False, False, False, False]
-               
-                blinky_morto = False
-                inky_morto = False
-                clyde_morto = False
-                pinky_morto = False
-        else:
-            fim_de_jogo = True
-            movendo = False
-            contador_inicio = 0
-    if powerup and circulo_jogador.colliderect(blinky.rect) and fantasmas_mortos[1]:
-        if vidas > 0:
-                vidas -= 1
-                powerup = False
-                contador_power = 0
-                contador_inicio = 0
-                jogador_x = 200
-                jogador_y = 335
-                direcao = 0
-                comando_direcao = 0
-
-                jogador_x = 203
-                jogador_y = 335
-                direcao = 0
-
-                blinky_x = 200
-                blinky_y = 165
-                direcao_blinky = 0
-
-                inky_x = 175
-                inky_y = 208
-                direcao_inky = 2
-
-                pinky_x = 225
-                pinky_y = 208
-                direcao_pinky = 2
-
-                clyde_x = 200
-                clyde_y = 208
-                direcao_clyde = 2
-
-                fantasmas_mortos = [False, False, False, False]
-               
-                blinky_morto = False
-                inky_morto = False
-                clyde_morto = False
-                pinky_morto = False
-        else:
-            fim_de_jogo = True
-            movendo = False
-            contador_inicio = 0
-    if powerup and circulo_jogador.colliderect(blinky.rect) and fantasmas_mortos[2]:
-        if vidas > 0:
-                vidas -= 1
-                powerup = False
-                contador_power = 0
-                contador_inicio = 0
-                jogador_x = 200
-                jogador_y = 335
-                direcao = 0
-                comando_direcao = 0
-
-                jogador_x = 203
-                jogador_y = 335
-                direcao = 0
-
-                blinky_x = 200
-                blinky_y = 165
-                direcao_blinky = 0
-
-                inky_x = 175
-                inky_y = 208
-                direcao_inky = 2
-
-                pinky_x = 225
-                pinky_y = 208
-                direcao_pinky = 2
-
-                clyde_x = 200
-                clyde_y = 208
-                direcao_clyde = 2
-
-                fantasmas_mortos = [False, False, False, False]
-               
-                blinky_morto = False
-                inky_morto = False
-                clyde_morto = False
-                pinky_morto = False
-        else:
-            fim_de_jogo = True
-            movendo = False
-            contador_inicio = 0
-    if powerup and circulo_jogador.colliderect(blinky.rect) and fantasmas_mortos[3]:
-        if vidas > 0:
-                vidas -= 1
-                powerup = False
-                contador_power = 0
-                contador_inicio = 0
-                jogador_x = 200
-                jogador_y = 335
-                direcao = 0
-                comando_direcao = 0
-
-                jogador_x = 203
-                jogador_y = 335
-                direcao = 0
-
-                blinky_x = 200
-                blinky_y = 165
-                direcao_blinky = 0
-
-                inky_x = 175
-                inky_y = 208
-                direcao_inky = 2
-
-                pinky_x = 225
-                pinky_y = 208
-                direcao_pinky = 2
-
-                clyde_x = 200
-                clyde_y = 208
-                direcao_clyde = 2
-
-                fantasmas_mortos = [False, False, False, False]
-               
-                blinky_morto = False
-                inky_morto = False
-                clyde_morto = False
-                pinky_morto = False
-        else:
-            fim_de_jogo = True
-            movendo = False
-            contador_inicio = 0
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             rodando = False
@@ -1092,6 +927,7 @@ while rodando:
             if event.key == pygame.K_DOWN:
                 comando_direcao = 3
             if event.key == pygame.K_SPACE and (fim_de_jogo or jogo_ganho):
+                som_comeco.play()
                 vidas -= 1
                 powerup = False
                 contador_power = 0
@@ -1148,7 +984,7 @@ while rodando:
         if comando_direcao == i and pode_virar[i]:
             direcao = i
 
-    if jogador_x > largura:
+    if jogador_x > LARGURA:
         jogador_x = -23
     elif jogador_x < -25:
         jogador_x = 410
@@ -1163,6 +999,5 @@ while rodando:
         clyde_morto = False
 
     pygame.display.flip()
-
 
 pygame.quit()
