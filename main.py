@@ -28,18 +28,16 @@ blinky_x = 200
 blinky_y = 165
 direcao_blinky = 0
 
-inky_x = 200
-inky_y = 195
+inky_x = 175
+inky_y = 208
 direcao_inky = 2
 
-# o rosa n está aparecendo na tela pq está sendo carregado na mesma posição do clyde
-
-pinky_x = 200
-pinky_y = 218
+pinky_x = 225
+pinky_y = 208
 direcao_pinky = 2
 
 clyde_x = 200
-clyde_y = 218
+clyde_y = 208
 direcao_clyde = 2
 
 contador = 0
@@ -319,7 +317,6 @@ class Fantasma:
         elif self.coord_x < -25:
             self.coord_x = 410
         return self.coord_x, self.coord_y, self.direcao
-
 
     def blinky_movimento(self):
         if self.direcao == 0:
@@ -745,7 +742,6 @@ def busca_alvos(blink_x, blink_y, ink_x, ink_y, pink_x, pink_y, clyd_x, clyd_y):
 
     return [blink_alvo, ink_alvo, pink_alvo, clyd_alvo]
 
-
 rodando = True
 while rodando:
     temporizador.tick(fps)
@@ -847,25 +843,29 @@ while rodando:
                 powerup = False
                 contador_power = 0
                 contador_inicio = 0
-                jogador_x = 200
+                jogador_x = 203
                 jogador_y = 335
                 direcao = 0
                 comando_direcao = 0
 
-                blinky_x = 25
-                blinky_y = 25
+                jogador_x = 203
+                jogador_y = 335
+                direcao = 0
+
+                blinky_x = 200
+                blinky_y = 165
                 direcao_blinky = 0
 
-                inky_x = 200
-                inky_y = 195
+                inky_x = 175
+                inky_y = 208
                 direcao_inky = 2
 
-                pinky_x = 200
-                pinky_y = 218
+                pinky_x = 225
+                pinky_y = 208
                 direcao_pinky = 2
 
                 clyde_x = 200
-                clyde_y = 218
+                clyde_y = 208
                 direcao_clyde = 2
 
                 fantasmas_mortos = [False, False, False, False]
@@ -907,20 +907,24 @@ while rodando:
                 direcao = 0
                 comando_direcao = 0
 
-                blinky_x = 25
-                blinky_y = 25
+                jogador_x = 203
+                jogador_y = 335
+                direcao = 0
+
+                blinky_x = 200
+                blinky_y = 165
                 direcao_blinky = 0
 
-                inky_x = 200
-                inky_y = 195
+                inky_x = 175
+                inky_y = 208
                 direcao_inky = 2
 
-                pinky_x = 200
-                pinky_y = 218
+                pinky_x = 225
+                pinky_y = 208
                 direcao_pinky = 2
 
                 clyde_x = 200
-                clyde_y = 218
+                clyde_y = 208
                 direcao_clyde = 2
 
                 fantasmas_mortos = [False, False, False, False]
@@ -944,20 +948,24 @@ while rodando:
                 direcao = 0
                 comando_direcao = 0
 
-                blinky_x = 25
-                blinky_y = 25
+                jogador_x = 203
+                jogador_y = 335
+                direcao = 0
+
+                blinky_x = 200
+                blinky_y = 165
                 direcao_blinky = 0
 
-                inky_x = 200
-                inky_y = 195
+                inky_x = 175
+                inky_y = 208
                 direcao_inky = 2
 
-                pinky_x = 200
-                pinky_y = 218
+                pinky_x = 225
+                pinky_y = 208
                 direcao_pinky = 2
 
                 clyde_x = 200
-                clyde_y = 218
+                clyde_y = 208
                 direcao_clyde = 2
 
                 fantasmas_mortos = [False, False, False, False]
@@ -981,20 +989,24 @@ while rodando:
                 direcao = 0
                 comando_direcao = 0
 
-                blinky_x = 25
-                blinky_y = 25
+                jogador_x = 203
+                jogador_y = 335
+                direcao = 0
+
+                blinky_x = 200
+                blinky_y = 165
                 direcao_blinky = 0
 
-                inky_x = 200
-                inky_y = 195
+                inky_x = 175
+                inky_y = 208
                 direcao_inky = 2
 
-                pinky_x = 200
-                pinky_y = 218
+                pinky_x = 225
+                pinky_y = 208
                 direcao_pinky = 2
 
                 clyde_x = 200
-                clyde_y = 218
+                clyde_y = 208
                 direcao_clyde = 2
 
                 fantasmas_mortos = [False, False, False, False]
@@ -1018,20 +1030,24 @@ while rodando:
                 direcao = 0
                 comando_direcao = 0
 
-                blinky_x = 25
-                blinky_y = 25
+                jogador_x = 203
+                jogador_y = 335
+                direcao = 0
+
+                blinky_x = 200
+                blinky_y = 165
                 direcao_blinky = 0
 
-                inky_x = 200
-                inky_y = 195
+                inky_x = 175
+                inky_y = 208
                 direcao_inky = 2
 
-                pinky_x = 200
-                pinky_y = 218
+                pinky_x = 225
+                pinky_y = 208
                 direcao_pinky = 2
 
                 clyde_x = 200
-                clyde_y = 218
+                clyde_y = 208
                 direcao_clyde = 2
 
                 fantasmas_mortos = [False, False, False, False]
@@ -1062,25 +1078,29 @@ while rodando:
                 powerup = False
                 contador_power = 0
                 contador_inicio = 0
-                jogador_x = 200
+                jogador_x = 203
                 jogador_y = 335
                 direcao = 0
                 comando_direcao = 0
 
-                blinky_x = 25
-                blinky_y = 25
+                jogador_x = 203
+                jogador_y = 335
+                direcao = 0
+
+                blinky_x = 200
+                blinky_y = 165
                 direcao_blinky = 0
 
-                inky_x = 200
-                inky_y = 195
+                inky_x = 175
+                inky_y = 208
                 direcao_inky = 2
 
-                pinky_x = 200
-                pinky_y = 218
+                pinky_x = 225
+                pinky_y = 208
                 direcao_pinky = 2
 
                 clyde_x = 200
-                clyde_y = 218
+                clyde_y = 208
                 direcao_clyde = 2
 
                 fantasmas_mortos = [False, False, False, False]
