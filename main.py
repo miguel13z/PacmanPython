@@ -24,8 +24,8 @@ jogador_x = 203
 jogador_y = 335
 direcao = 0
 
-blinky_x = 25
-blinky_y = 25
+blinky_x = 200
+blinky_y = 165
 direcao_blinky = 0
 
 inky_x = 200
@@ -63,7 +63,7 @@ inky_caixa= False
 clyde_caixa = False
 pinky_caixa = False
 
-velocidade_fantasma = [2, 2, 2, 2]
+velocidade_fantasma = [0, 0, 0, 0]
 
 contador_inicio = 0
 movendo = False
@@ -425,7 +425,6 @@ class Fantasma:
             self.coord_x = 410
         return self.coord_x, self.coord_y, self.direcao
 
-
     def inky_movimento(self):
         if self.direcao == 0:
             if self.alvo[0] > self.coord_x and self.vira[0]:
@@ -545,7 +544,6 @@ class Fantasma:
         elif self.coord_x < -25:
             self.coord_x = 410
         return self.coord_x, self.coord_y, self.direcao
-
 
     def pinky_movimento(self):
         if self.direcao == 0:
@@ -669,8 +667,6 @@ class Fantasma:
         elif self.coord_x < -25:
             self.coord_x = 410
         return self.coord_x, self.coord_y, self.direcao
-
-
 
 def busca_alvos(blink_x, blink_y, ink_x, ink_y, pink_x, pink_y, clyd_x, clyd_y):
     if jogador_x < 210:
