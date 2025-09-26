@@ -12,6 +12,13 @@ som_morte = pygame.mixer.Sound('assets/sound/pacman_death.wav')
 som_comeco = pygame.mixer.Sound('assets/sound/pacman_beginning.wav')
 som_comer_fantasma = pygame.mixer.Sound('assets/sound/pacman_eatghost.wav')
 som_powerup = pygame.mixer.Sound('assets/sound/pacman_powerup.wav')
+
+som_bolinha.set_volume(0.3)
+som_morte.set_volume(0.3)
+som_comeco.set_volume(0.3)
+som_comer_fantasma.set_volume(0.3)
+som_powerup.set_volume(0.3)
+
 pygame.mixer.music.load('assets/sound/menu_sound.wav')
 
 estado_jogo = 'menu'
@@ -36,7 +43,6 @@ while rodando:
                     som_comeco.play()
         
         pygame.display.flip()
-        continue
     
     if estado_jogo == 'jogo':
         desenha_mapa(ALTURA, LARGURA, tela, flicker, level)

@@ -66,3 +66,12 @@ movendo = False
 vidas = 3
 fim_de_jogo = False
 jogo_ganho = False
+
+# No arquivo config.py, adicione este código abaixo das outras variáveis de inicialização
+import random
+
+pixel_posicoes = []
+for i in range(20):
+    for j in range(20):
+        pixel_posicoes.append((j * 21, i * 21))
+random.shuffle(pixel_posicoes)

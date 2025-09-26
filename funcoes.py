@@ -23,7 +23,7 @@ def carregar_menu():
     rect_linha1 = texto_creditos_linha1.get_rect(center=(LARGURA // 2, 425))
     tela.blit(texto_creditos_linha1, rect_linha1)
     
-    texto_creditos_linha2 = fonte_creditos.render('Pedro Henrique e Miguel', False, 'white')
+    texto_creditos_linha2 = fonte_creditos.render('Pedro Henrique e Miguel Melo', False, 'white')
     rect_linha2 = texto_creditos_linha2.get_rect(center=(LARGURA // 2, 440)) 
     tela.blit(texto_creditos_linha2, rect_linha2)
 
