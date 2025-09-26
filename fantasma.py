@@ -1,7 +1,6 @@
 import pygame
 from config import *
 
-
 class Fantasma:
     def __init__(self, coord_x, coord_y, alvo, velocidade, img, direcao, morto, caixa, id, powerup_status, fantasmas_mortos_list):
         self.coord_x = coord_x
@@ -107,7 +106,7 @@ class Fantasma:
             self.vira[1] = True
 
         
-        if 190 < self.coord_x < 230 and 190 < self.coord_y < 230:
+        if 170 < self.coord_x < 230 and 160 < self.coord_y < 210:
             self.na_caixa = True
         else:
             self.na_caixa = False

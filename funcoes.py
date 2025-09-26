@@ -2,11 +2,39 @@ import pygame
 from config import *
 from math import pi
 
-def desenha_pontuacao(fonte, pontuacao, tela, powerup, vidas, fim_de_jogo, jogo_ganho):
-    texto_pontuacao = fonte.render(f'Score: {pontuacao}', True, 'white')
+def carregar_menu():
+    fonte_titulo = pygame.font.Font('assets/font/press_start_2p.ttf', 56)
+    texto_titulo = fonte_titulo.render('PACMAN', False, 'yellow')
+    texto_rect = texto_titulo.get_rect(center=(LARGURA // 2, 70)) 
+    tela.blit(texto_titulo, texto_rect)
+
+    logo_pacman = pygame.image.load('assets/img/menu/imagem_menu.png')
+    logo_pacman = pygame.transform.scale(logo_pacman, (215, 40))
+    logo_rect = logo_pacman.get_rect(center=(LARGURA // 2, 120))
+    tela.blit(logo_pacman, logo_rect)
+
+    fonte_menu = pygame.font.Font('assets/font/press_start_2p.ttf', 13)
+    texto_menu = fonte_menu.render('Pressione ENTER para começar', False, 'white')
+    texto_menu_rect = texto_menu.get_rect(center=(LARGURA // 2, 250))
+    tela.blit(texto_menu, texto_menu_rect)
+
+    fonte_creditos = pygame.font.Font('assets/font/press_start_2p.ttf', 10)
+    texto_creditos_linha1 = fonte_creditos.render('Projeto de P1/LP1', False, 'white')
+    rect_linha1 = texto_creditos_linha1.get_rect(center=(LARGURA // 2, 425))
+    tela.blit(texto_creditos_linha1, rect_linha1)
+    
+    texto_creditos_linha2 = fonte_creditos.render('Pedro Henrique e Miguel Melo', False, 'white')
+    rect_linha2 = texto_creditos_linha2.get_rect(center=(LARGURA // 2, 440)) 
+    tela.blit(texto_creditos_linha2, rect_linha2)
+
+def desenha_pontuacao(pontuacao, tela, powerup, vidas, fim_de_jogo, jogo_ganho):
+    fonte_pontuacao = pygame.font.Font('assets/font/press_start_2p.ttf', 12)
+    texto_pontuacao = fonte_pontuacao.render(f'Score: {pontuacao}', False, 'white')
+    fonte = pygame.font.Font('assets/font/press_start_2p.ttf', 10)
+    tela.blit(texto_pontuacao, (10,460))
     tela.blit(texto_pontuacao, (10,460))
     if powerup:
-        pygame.draw.circle(tela, 'blue', (100, 465), 5)
+        pygame.draw.circle(tela, 'blue', (130, 465), 5)
         
     for i in range(vidas):
         tela.blit(pygame.transform.scale(imagens_jogador[0], (15, 15)), (350 + i * 20, 458))
@@ -162,7 +190,7 @@ def busca_alvos(blinky, inky, pinky, clyde, jogador_x, jogador_y, fantasmas_mort
     else:
         fuga_y = 0
 
-    local_retorno = (200, 200)
+    local_retorno = (200, 208)
     saida_caixa = (211, 50)
 
     if powerup:
@@ -194,82 +222,6 @@ def busca_alvos(blinky, inky, pinky, clyde, jogador_x, jogador_y, fantasmas_mort
         else:
             clyd_alvo = local_retorno
 
-    else:
-        if not blinky.morto:
-            if blinky.na_caixa:
-                blink_alvo = saida_caixa
-            else:
-                blink_alvo = (jogador_x, jogador_y)
-        else:
-            blink_alvo = local_retorno
-
-        if not inky.morto:
-            if inky.na_caixa:
-                ink_alvo = saida_caixa
-            else:
-                ink_alvo = (jogador_x, jogador_y)
-        else:
-            ink_alvo = local_retorno
-
-        if not pinky.morto:
-            if pinky.na_caixa:
-                pink_alvo = saida_caixa
-            else:
-                pink_alvo = (jogador_x, jogador_y)
-        else:
-            pink_alvo = local_retorno
-
-        if not clyde.morto:
-            if clyde.na_caixa:
-                clyd_alvo = saida_caixa
-            else:
-                clyd_alvo = (jogador_x, jogador_y)
-        else:
-            clyd_alvo = local_retorno
-
-    return [blink_alvo, ink_alvo, pink_alvo, clyd_alvo]
-
-def busca_alvos(jogador_x, jogador_y, powerup, blinky, inky, pinky, clyde, fantasmas_mortos):
-    if jogador_x < 210:
-        fuga_x = 420
-    else:
-        fuga_x = 0
-    if jogador_y < 210:
-        fuga_y = 420
-    else:
-        fuga_y = 0
-
-    local_retorno = (200, 200)
-    saida_caixa = (211, 50)
-
-    if powerup:
-        if not blinky.morto and not fantasmas_mortos[0]:
-            blink_alvo = (fuga_x, fuga_y)
-        elif blinky.na_caixa:
-            blink_alvo = saida_caixa
-        else:
-            blink_alvo = local_retorno
-
-        if not inky.morto and not fantasmas_mortos[1]:
-            ink_alvo = (fuga_x, jogador_y)
-        elif inky.na_caixa:
-            ink_alvo = saida_caixa
-        else:
-            ink_alvo = local_retorno
-
-        if not pinky.morto and not fantasmas_mortos[2]:
-            pink_alvo = (jogador_x, fuga_y)
-        elif pinky.na_caixa:
-            pink_alvo = saida_caixa
-        else:
-            pink_alvo = local_retorno
-
-        if not clyde.morto and not fantasmas_mortos[3]:
-            clyd_alvo = (450, 450)
-        elif clyde.na_caixa:
-            clyd_alvo = saida_caixa
-        else:
-            clyd_alvo = local_retorno
     else:
         if not blinky.morto:
             if blinky.na_caixa:

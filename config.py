@@ -9,7 +9,6 @@ ALTURA = 475
 tela = pygame.display.set_mode((LARGURA, ALTURA))
 temporizador = pygame.time.Clock()
 fps = 60
-fonte = pygame.font.Font('freesansbold.ttf', 15)
 level = copy.deepcopy(mapa)
 
 img_blinky = pygame.transform.scale(pygame.image.load(f'assets/img/fantasmas/red.png'), (20, 20))
@@ -45,8 +44,8 @@ pode_virar = [False, False, False, False]
 comando_direcao = 0
 velocidade = 2
 pontuacao = 0
-contador_power = 0 
 powerup = False
+contador_power = 0 
 
 fantasmas_mortos = [False, False, False, False]
 alvos = [(jogador_x, jogador_y), (jogador_x, jogador_y), (jogador_x, jogador_y), (jogador_x, jogador_y)]
