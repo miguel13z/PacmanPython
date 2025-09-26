@@ -2,11 +2,39 @@ import pygame
 from config import *
 from math import pi
 
-def desenha_pontuacao(fonte, pontuacao, tela, powerup, vidas, fim_de_jogo, jogo_ganho):
-    texto_pontuacao = fonte.render(f'Score: {pontuacao}', True, 'white')
+def carregar_menu():
+    fonte_titulo = pygame.font.Font('assets/font/press_start_2p.ttf', 56)
+    texto_titulo = fonte_titulo.render('PACMAN', False, 'yellow')
+    texto_rect = texto_titulo.get_rect(center=(LARGURA // 2, 70)) 
+    tela.blit(texto_titulo, texto_rect)
+
+    logo_pacman = pygame.image.load('assets/img/menu/imagem_menu.png')
+    logo_pacman = pygame.transform.scale(logo_pacman, (215, 40))
+    logo_rect = logo_pacman.get_rect(center=(LARGURA // 2, 120))
+    tela.blit(logo_pacman, logo_rect)
+
+    fonte_menu = pygame.font.Font('assets/font/press_start_2p.ttf', 13)
+    texto_menu = fonte_menu.render('Pressione ENTER para começar', False, 'white')
+    texto_menu_rect = texto_menu.get_rect(center=(LARGURA // 2, 250))
+    tela.blit(texto_menu, texto_menu_rect)
+
+    fonte_creditos = pygame.font.Font('assets/font/press_start_2p.ttf', 10)
+    texto_creditos_linha1 = fonte_creditos.render('Projeto de P1/LP1', False, 'white')
+    rect_linha1 = texto_creditos_linha1.get_rect(center=(LARGURA // 2, 425))
+    tela.blit(texto_creditos_linha1, rect_linha1)
+    
+    texto_creditos_linha2 = fonte_creditos.render('Pedro Henrique e Miguel', False, 'white')
+    rect_linha2 = texto_creditos_linha2.get_rect(center=(LARGURA // 2, 440)) 
+    tela.blit(texto_creditos_linha2, rect_linha2)
+
+def desenha_pontuacao(pontuacao, tela, powerup, vidas, fim_de_jogo, jogo_ganho):
+    fonte_pontuacao = pygame.font.Font('assets/font/press_start_2p.ttf', 12)
+    texto_pontuacao = fonte_pontuacao.render(f'Score: {pontuacao}', False, 'white')
+    fonte = pygame.font.Font('assets/font/press_start_2p.ttf', 10)
+    tela.blit(texto_pontuacao, (10,460))
     tela.blit(texto_pontuacao, (10,460))
     if powerup:
-        pygame.draw.circle(tela, 'blue', (100, 465), 5)
+        pygame.draw.circle(tela, 'blue', (130, 465), 5)
         
     for i in range(vidas):
         tela.blit(pygame.transform.scale(imagens_jogador[0], (15, 15)), (350 + i * 20, 458))

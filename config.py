@@ -9,7 +9,6 @@ ALTURA = 475
 tela = pygame.display.set_mode((LARGURA, ALTURA))
 temporizador = pygame.time.Clock()
 fps = 60
-fonte = pygame.font.Font('freesansbold.ttf', 15)
 level = copy.deepcopy(mapa)
 
 img_blinky = pygame.transform.scale(pygame.image.load(f'assets/img/fantasmas/red.png'), (20, 20))
