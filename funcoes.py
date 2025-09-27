@@ -190,7 +190,7 @@ def busca_alvos(blinky, inky, pinky, clyde, jogador_x, jogador_y, fantasmas_mort
     else:
         fuga_y = 0
 
-    local_retorno = (200, 200)
+    local_retorno = (200, 208)
     saida_caixa = (211, 50)
 
     if powerup:
@@ -222,82 +222,6 @@ def busca_alvos(blinky, inky, pinky, clyde, jogador_x, jogador_y, fantasmas_mort
         else:
             clyd_alvo = local_retorno
 
-    else:
-        if not blinky.morto:
-            if blinky.na_caixa:
-                blink_alvo = saida_caixa
-            else:
-                blink_alvo = (jogador_x, jogador_y)
-        else:
-            blink_alvo = local_retorno
-
-        if not inky.morto:
-            if inky.na_caixa:
-                ink_alvo = saida_caixa
-            else:
-                ink_alvo = (jogador_x, jogador_y)
-        else:
-            ink_alvo = local_retorno
-
-        if not pinky.morto:
-            if pinky.na_caixa:
-                pink_alvo = saida_caixa
-            else:
-                pink_alvo = (jogador_x, jogador_y)
-        else:
-            pink_alvo = local_retorno
-
-        if not clyde.morto:
-            if clyde.na_caixa:
-                clyd_alvo = saida_caixa
-            else:
-                clyd_alvo = (jogador_x, jogador_y)
-        else:
-            clyd_alvo = local_retorno
-
-    return [blink_alvo, ink_alvo, pink_alvo, clyd_alvo]
-
-def busca_alvos(jogador_x, jogador_y, powerup, blinky, inky, pinky, clyde, fantasmas_mortos):
-    if jogador_x < 210:
-        fuga_x = 420
-    else:
-        fuga_x = 0
-    if jogador_y < 210:
-        fuga_y = 420
-    else:
-        fuga_y = 0
-
-    local_retorno = (200, 200)
-    saida_caixa = (211, 50)
-
-    if powerup:
-        if not blinky.morto and not fantasmas_mortos[0]:
-            blink_alvo = (fuga_x, fuga_y)
-        elif blinky.na_caixa:
-            blink_alvo = saida_caixa
-        else:
-            blink_alvo = local_retorno
-
-        if not inky.morto and not fantasmas_mortos[1]:
-            ink_alvo = (fuga_x, jogador_y)
-        elif inky.na_caixa:
-            ink_alvo = saida_caixa
-        else:
-            ink_alvo = local_retorno
-
-        if not pinky.morto and not fantasmas_mortos[2]:
-            pink_alvo = (jogador_x, fuga_y)
-        elif pinky.na_caixa:
-            pink_alvo = saida_caixa
-        else:
-            pink_alvo = local_retorno
-
-        if not clyde.morto and not fantasmas_mortos[3]:
-            clyd_alvo = (450, 450)
-        elif clyde.na_caixa:
-            clyd_alvo = saida_caixa
-        else:
-            clyd_alvo = local_retorno
     else:
         if not blinky.morto:
             if blinky.na_caixa:
