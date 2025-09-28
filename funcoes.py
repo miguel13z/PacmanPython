@@ -18,6 +18,11 @@ def carregar_menu():
     texto_menu_rect = texto_menu.get_rect(center=(LARGURA // 2, 250))
     tela.blit(texto_menu, texto_menu_rect)
 
+    fonte_esc = pygame.font.Font('assets/font/press_start_2p.ttf', 13)
+    texto_esc = fonte_esc.render('Pressione ESC para sair', False, 'white')
+    texto_esc_rect = texto_esc.get_rect(center=(LARGURA // 2, 280))
+    tela.blit(texto_esc, texto_esc_rect)
+
     fonte_creditos = pygame.font.Font('assets/font/press_start_2p.ttf', 10)
     texto_creditos_linha1 = fonte_creditos.render('Projeto de P1/LP1', False, 'white')
     rect_linha1 = texto_creditos_linha1.get_rect(center=(LARGURA // 2, 425))

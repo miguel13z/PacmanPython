@@ -40,6 +40,8 @@ while rodando:
                 if event.key == pygame.K_RETURN:
                     pygame.mixer.music.stop()
                     estado_jogo = 'instrucoes'
+                if event.key == pygame.K_ESCAPE:
+                    rodando = False
         
         pygame.display.flip()
 
