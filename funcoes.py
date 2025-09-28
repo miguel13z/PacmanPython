@@ -32,9 +32,8 @@ def desenha_pontuacao(pontuacao, tela, powerup, vidas, fim_de_jogo, jogo_ganho):
     texto_pontuacao = fonte_pontuacao.render(f'Score: {pontuacao}', False, 'white')
     fonte = pygame.font.Font('assets/font/press_start_2p.ttf', 10)
     tela.blit(texto_pontuacao, (10,460))
-    tela.blit(texto_pontuacao, (10,460))
     if powerup:
-        pygame.draw.circle(tela, 'blue', (130, 465), 5)
+        pygame.draw.circle(tela, 'blue', (148, 465), 5)
         
     for i in range(vidas):
         tela.blit(pygame.transform.scale(imagens_jogador[0], (15, 15)), (350 + i * 20, 458))
