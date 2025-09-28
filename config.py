@@ -46,9 +46,9 @@ velocidade = 2
 pontuacao = 0
 powerup = False
 contador_power = 0 
-
 fantasmas_mortos = [False, False, False, False]
 alvos = [(jogador_x, jogador_y), (jogador_x, jogador_y), (jogador_x, jogador_y), (jogador_x, jogador_y)]
+
 blinky_morto = False
 inky_morto = False
 clyde_morto = False
@@ -60,7 +60,6 @@ clyde_caixa = False
 pinky_caixa = False
 
 velocidade_fantasma = [0, 0, 0, 0]
-
 contador_inicio = 0
 movendo = False
 vidas = 3
