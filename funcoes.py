@@ -27,14 +27,51 @@ def carregar_menu():
     rect_linha2 = texto_creditos_linha2.get_rect(center=(LARGURA // 2, 440)) 
     tela.blit(texto_creditos_linha2, rect_linha2)
 
+def carregar_instrucoes():
+    fonte_titulo = pygame.font.Font('assets/font/press_start_2p.ttf', 30)
+    texto_titulo = fonte_titulo.render('Instruções', False, 'yellow')
+    texto_rect = texto_titulo.get_rect(center=(LARGURA // 2, 70))
+    tela.blit(texto_titulo, texto_rect)
+
+    fonte_instrucoes = pygame.font.Font('assets/font/press_start_2p.ttf', 10)
+    
+    instrucoes = [
+        "Use as SETAS para mover o Pacman.",
+        "Coma todas as bolinhas para vencer.",
+        "Cuidado com os fantasmas!",
+        "Coma as pílulas de poder (maiores)",
+        "para poder comer os fantasmas."
+    ]
+    
+    y_pos = 150
+    for linha in instrucoes:
+        texto_linha = fonte_instrucoes.render(linha, True, 'white')
+        linha_rect = texto_linha.get_rect(center=(LARGURA // 2, y_pos))
+        tela.blit(texto_linha, linha_rect)
+        y_pos += 30
+
+        if linha == "Cuidado com os fantasmas!":
+            blinky_rect = img_blinky.get_rect(right=linha_rect.left - 10, centery=linha_rect.centery)
+            tela.blit(img_blinky, blinky_rect)
+            clyde_rect = img_clyde.get_rect(left=linha_rect.right + 10, centery=linha_rect.centery)
+            tela.blit(img_clyde, clyde_rect)
+
+    fonte_navegacao = pygame.font.Font('assets/font/press_start_2p.ttf', 13)
+    texto_enter = fonte_navegacao.render('Pressione ENTER para começar', False, 'white')
+    enter_rect = texto_enter.get_rect(center=(LARGURA // 2, 350))
+    tela.blit(texto_enter, enter_rect)
+
+    texto_esc = fonte_navegacao.render('Pressione ESC para voltar', False, 'white')
+    esc_rect = texto_esc.get_rect(center=(LARGURA // 2, 380))
+    tela.blit(texto_esc, esc_rect)
+
 def desenha_pontuacao(pontuacao, tela, powerup, vidas, fim_de_jogo, jogo_ganho):
     fonte_pontuacao = pygame.font.Font('assets/font/press_start_2p.ttf', 12)
     texto_pontuacao = fonte_pontuacao.render(f'Score: {pontuacao}', False, 'white')
     fonte = pygame.font.Font('assets/font/press_start_2p.ttf', 10)
     tela.blit(texto_pontuacao, (10,460))
-    tela.blit(texto_pontuacao, (10,460))
     if powerup:
-        pygame.draw.circle(tela, 'blue', (130, 465), 5)
+        pygame.draw.circle(tela, 'blue', (148, 465), 5)
         
     for i in range(vidas):
         tela.blit(pygame.transform.scale(imagens_jogador[0], (15, 15)), (350 + i * 20, 458))

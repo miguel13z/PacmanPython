@@ -106,7 +106,7 @@ class Fantasma:
             self.vira[1] = True
 
         
-        if 170 < self.coord_x < 230 and 160 < self.coord_y < 210:
+        if 170 < self.coord_x < 230 and 185 < self.coord_y < 210:
             self.na_caixa = True
         else:
             self.na_caixa = False
@@ -244,11 +244,10 @@ class Fantasma:
                     self.coord_x -= self.velocidade
                 else:
                     self.coord_y += self.velocidade
-
-        if self.coord_x > LARGURA:
-            self.coord_x = -23
-        elif self.coord_x < -25:
-            self.coord_x = 410
+        if self.coord_x < -30:
+            self.coord_x = 900
+        elif self.coord_x > 900:
+            self.coord_x - 30
         return self.coord_x, self.coord_y, self.direcao
 
     def blinky_movimento(self):
@@ -349,10 +348,10 @@ class Fantasma:
                     self.coord_x -= self.velocidade
             elif self.vira[3]:
                 self.coord_y += self.velocidade
-        if self.coord_x > LARGURA:
-            self.coord_x = -23
-        elif self.coord_x < -25:
-            self.coord_x = 410
+        if self.coord_x < -30:
+            self.coord_x = 900
+        elif self.coord_x > 900:
+            self.coord_x - 30
         return self.coord_x, self.coord_y, self.direcao
 
     def inky_movimento(self):
@@ -469,10 +468,10 @@ class Fantasma:
                     self.coord_x += self.velocidade
             elif self.vira[3]:
                 self.coord_y += self.velocidade
-        if self.coord_x > LARGURA:
-            self.coord_x = -23
-        elif self.coord_x < -25:
-            self.coord_x = 410
+        if self.coord_x < -30:
+            self.coord_x = 900
+        elif self.coord_x > 900:
+            self.coord_x - 30
         return self.coord_x, self.coord_y, self.direcao
 
     def pinky_movimento(self):
@@ -592,8 +591,8 @@ class Fantasma:
                     self.coord_x -= self.velocidade
                 else:
                     self.coord_y += self.velocidade
-        if self.coord_x > LARGURA:
-            self.coord_x = -23
-        elif self.coord_x < -25:
-            self.coord_x = 410
+        if self.coord_x < -30:
+            self.coord_x = 900
+        elif self.coord_x > 900:
+            self.coord_x - 30
         return self.coord_x, self.coord_y, self.direcao

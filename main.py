@@ -39,11 +39,29 @@ while rodando:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     pygame.mixer.music.stop()
-                    estado_jogo = 'jogo'
-                    som_comeco.play()
+                    estado_jogo = 'instrucoes'
         
         pygame.display.flip()
-    
+
+    elif estado_jogo == 'instrucoes':
+        carregar_instrucoes()
+
+        if not pygame.mixer.music.get_busy():
+            pygame.mixer.music.play(-1)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                rodando = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    pygame.mixer.music.stop()
+                    estado_jogo = 'jogo'
+                    som_comeco.play()
+                if event.key == pygame.K_ESCAPE:
+                    estado_jogo = 'menu'
+        
+        pygame.display.flip()
+
     if estado_jogo == 'jogo':
         desenha_mapa(ALTURA, LARGURA, tela, flicker, level)
         centro_x = jogador_x + 10
@@ -83,10 +101,11 @@ while rodando:
         blinky = Fantasma(blinky_x, blinky_y, alvos[0], velocidade_fantasma[0], img_blinky, direcao_blinky, blinky_morto, blinky_caixa, 0, powerup, fantasmas_mortos)
         inky = Fantasma(inky_x, inky_y, alvos[1], velocidade_fantasma[1], img_inky, direcao_inky, inky_morto, inky_caixa, 1, powerup, fantasmas_mortos)
         pinky = Fantasma(pinky_x, pinky_y, alvos[2], velocidade_fantasma[2], img_pinky, direcao_pinky, pinky_morto, pinky_caixa, 2, powerup, fantasmas_mortos)
-        clyde = Fantasma(clyde_x, clyde_y, alvos[0], velocidade_fantasma[3], img_clyde, direcao_clyde, clyde_morto, clyde_caixa, 3, powerup, fantasmas_mortos)
+        clyde = Fantasma(clyde_x, clyde_y, alvos[3], velocidade_fantasma[3], img_clyde, direcao_clyde, clyde_morto, clyde_caixa, 3, powerup, fantasmas_mortos)
 
         desenha_pontuacao(pontuacao, tela, powerup, vidas, fim_de_jogo, jogo_ganho)
         alvos = busca_alvos(blinky, inky, pinky, clyde, jogador_x, jogador_y, fantasmas_mortos, powerup)
+        
         centro_x = jogador_x + 10
         centro_y = jogador_y + 10
         pode_virar = verifica_posicao(centro_x, centro_y, LARGURA, ALTURA, direcao, level)
