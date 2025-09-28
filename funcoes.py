@@ -65,6 +65,54 @@ def carregar_instrucoes():
     esc_rect = texto_esc.get_rect(center=(LARGURA // 2, 380))
     tela.blit(texto_esc, esc_rect)
 
+def desenha_fim_de_jogo(pontuacao):
+    overlay = pygame.Surface((LARGURA, ALTURA), pygame.SRCALPHA)
+    overlay.fill((0, 0, 0, 180))
+    tela.blit(overlay, (0, 0))
+
+    fonte_game_over = pygame.font.Font('assets/font/press_start_2p.ttf', 35)
+    texto_game_over = fonte_game_over.render('GAME OVER', True, 'red')
+    rect_game_over = texto_game_over.get_rect(center=(LARGURA // 2, ALTURA // 2 - 80))
+    tela.blit(texto_game_over, rect_game_over)
+
+    fonte_pontuacao = pygame.font.Font('assets/font/press_start_2p.ttf', 15)
+    texto_pontuacao_final = fonte_pontuacao.render(f'Pontuação Final: {pontuacao}', True, 'white')
+    rect_pontuacao_final = texto_pontuacao_final.get_rect(center=(LARGURA // 2, ALTURA // 2))
+    tela.blit(texto_pontuacao_final, rect_pontuacao_final)
+
+    fonte_instrucoes = pygame.font.Font('assets/font/press_start_2p.ttf', 10)
+    texto_reiniciar = fonte_instrucoes.render('Pressione ESPAÇO para reiniciar', True, 'white')
+    rect_reiniciar = texto_reiniciar.get_rect(center=(LARGURA // 2, ALTURA // 2 + 80))
+    tela.blit(texto_reiniciar, rect_reiniciar)
+    
+    texto_menu = fonte_instrucoes.render('Pressione ESC para voltar ao Menu', True, 'white')
+    rect_menu = texto_menu.get_rect(center=(LARGURA // 2, ALTURA // 2 + 110))
+    tela.blit(texto_menu, rect_menu)
+
+def desenha_vitoria(pontuacao):
+    overlay = pygame.Surface((LARGURA, ALTURA), pygame.SRCALPHA)
+    overlay.fill((0, 0, 0, 180))
+    tela.blit(overlay, (0, 0))
+
+    fonte_vitoria = pygame.font.Font('assets/font/press_start_2p.ttf', 30)
+    texto_vitoria = fonte_vitoria.render('VOCÊ VENCEU!', True, 'green')
+    rect_vitoria = texto_vitoria.get_rect(center=(LARGURA // 2, ALTURA // 2 - 80))
+    tela.blit(texto_vitoria, rect_vitoria)
+
+    fonte_pontuacao = pygame.font.Font('assets/font/press_start_2p.ttf', 15)
+    texto_pontuacao_final = fonte_pontuacao.render(f'Pontuação Final: {pontuacao}', True, 'white')
+    rect_pontuacao_final = texto_pontuacao_final.get_rect(center=(LARGURA // 2, ALTURA // 2))
+    tela.blit(texto_pontuacao_final, rect_pontuacao_final)
+
+    fonte_instrucoes = pygame.font.Font('assets/font/press_start_2p.ttf', 10)
+    texto_reiniciar = fonte_instrucoes.render('Pressione ESPAÇO para reiniciar', True, 'white')
+    rect_reiniciar = texto_reiniciar.get_rect(center=(LARGURA // 2, ALTURA // 2 + 80))
+    tela.blit(texto_reiniciar, rect_reiniciar)
+    
+    texto_menu = fonte_instrucoes.render('Pressione ESC para voltar ao Menu', True, 'white')
+    rect_menu = texto_menu.get_rect(center=(LARGURA // 2, ALTURA // 2 + 110))
+    tela.blit(texto_menu, rect_menu)
+
 def desenha_pontuacao(pontuacao, tela, powerup, vidas, fim_de_jogo, jogo_ganho):
     fonte_pontuacao = pygame.font.Font('assets/font/press_start_2p.ttf', 12)
     texto_pontuacao = fonte_pontuacao.render(f'Score: {pontuacao}', False, 'white')
@@ -76,17 +124,40 @@ def desenha_pontuacao(pontuacao, tela, powerup, vidas, fim_de_jogo, jogo_ganho):
     for i in range(vidas):
         tela.blit(pygame.transform.scale(imagens_jogador[0], (15, 15)), (350 + i * 20, 458))
 
-    if fim_de_jogo:
-        pygame.draw.rect(tela, 'white', [10, 100, 400, 150], 0, 10)
-        pygame.draw.rect(tela, 'dark grey', [20, 110, 380, 130], 0, 10)
-        texto_fim_de_jogo = fonte.render('Game Over! \nPressione espaço para recomeçar!', True, 'red')
-        tela.blit(texto_fim_de_jogo, (40, 170))
-
-    if jogo_ganho:
-        pygame.draw.rect(tela, 'white', [10, 100, 400, 150], 0, 10)
-        pygame.draw.rect(tela, 'dark grey', [20, 110, 380, 130], 0, 10)
-        texto_fim_de_jogo = fonte.render('Parabéns, você venceu! \nPressione espaço para recomeçar!', True, 'green')
-        tela.blit(texto_fim_de_jogo, (40, 170))
+def reiniciar_jogo():
+    powerup = False
+    contador_power = 0
+    contador_inicio = 0
+    jogador_x = 203
+    jogador_y = 335
+    direcao = 0
+    comando_direcao = 0
+    blinky_x = 200
+    blinky_y = 165
+    direcao_blinky = 0
+    inky_x = 175
+    inky_y = 208
+    direcao_inky = 2
+    pinky_x = 225
+    pinky_y = 208
+    direcao_pinky = 2
+    clyde_x = 200
+    clyde_y = 208
+    direcao_clyde = 2
+    fantasmas_mortos = [False, False, False, False]
+    blinky_morto = False
+    inky_morto = False
+    clyde_morto = False
+    pinky_morto = False
+    pontuacao = 0
+    vidas = 3
+    level = copy.deepcopy(mapa)
+    fim_de_jogo = False
+    jogo_ganho = False
+    
+    return powerup, contador_power, contador_inicio, jogador_x, jogador_y, direcao, comando_direcao, blinky_x, blinky_y, \
+        direcao_blinky, inky_x, inky_y, direcao_inky, pinky_x, pinky_y, direcao_pinky, clyde_x, clyde_y, direcao_clyde, \
+        fantasmas_mortos, blinky_morto, inky_morto, clyde_morto, pinky_morto, pontuacao, vidas, level, fim_de_jogo, jogo_ganho
 
 def verifica_colisao(altura, largura, jogador_x, level, centro_x, centro_y, pontuacao, power, contador_power, fantasmas_mortos):
     num1 = altura // 32

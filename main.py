@@ -154,8 +154,10 @@ while rodando:
         if contador_inicio < 240 and not fim_de_jogo and not jogo_ganho:
             movendo = False
             contador_inicio += 1
-        else:
+        elif not fim_de_jogo and not jogo_ganho:
             movendo = True
+        else:
+            movendo = False
 
         if not powerup:
             if (circulo_jogador.colliderect(blinky.rect) and not blinky.morto and not blinky.na_caixa) or \
@@ -224,6 +226,11 @@ while rodando:
             pontuacao += 2 ** fantasmas_mortos.count(True) * 100
             som_comer_fantasma.play()
 
+        if fim_de_jogo:
+            desenha_fim_de_jogo(pontuacao)
+        if jogo_ganho:
+            desenha_vitoria(pontuacao)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 rodando = False
@@ -238,47 +245,17 @@ while rodando:
                     comando_direcao = 3
                 if event.key == pygame.K_SPACE and (fim_de_jogo or jogo_ganho):
                     som_comeco.play()
-                    vidas -= 1
-                    powerup = False
-                    contador_power = 0
-                    contador_inicio = 0
-                    jogador_x = 203
-                    jogador_y = 335
-                    direcao = 0
-                    comando_direcao = 0
+                    powerup, contador_power, contador_inicio, jogador_x, jogador_y, direcao, comando_direcao, blinky_x, blinky_y, \
+                    direcao_blinky, inky_x, inky_y, direcao_inky, pinky_x, pinky_y, direcao_pinky, clyde_x, clyde_y, direcao_clyde, \
+                    fantasmas_mortos, blinky_morto, inky_morto, clyde_morto, pinky_morto, \
+                    pontuacao, vidas, level, fim_de_jogo, jogo_ganho = reiniciar_jogo()
 
-                    jogador_x = 203
-                    jogador_y = 335
-                    direcao = 0
-
-                    blinky_x = 200
-                    blinky_y = 165
-                    direcao_blinky = 0
-
-                    inky_x = 175
-                    inky_y = 208
-                    direcao_inky = 2
-
-                    pinky_x = 225
-                    pinky_y = 208
-                    direcao_pinky = 2
-
-                    clyde_x = 200
-                    clyde_y = 208
-                    direcao_clyde = 2
-
-                    fantasmas_mortos = [False, False, False, False]
-                
-                    blinky_morto = False
-                    inky_morto = False
-                    clyde_morto = False
-                    pinky_morto = False
-
-                    pontuacao = 0
-                    vidas = 3
-                    level = copy.deepcopy(mapa)
-                    fim_de_jogo = False
-                    jogo_ganho = False
+                if event.key == pygame.K_ESCAPE:
+                    powerup, contador_power, contador_inicio, jogador_x, jogador_y, direcao, comando_direcao, blinky_x, blinky_y, \
+                    direcao_blinky, inky_x, inky_y, direcao_inky, pinky_x, pinky_y, direcao_pinky, clyde_x, clyde_y, direcao_clyde, \
+                    fantasmas_mortos, blinky_morto, inky_morto, clyde_morto, pinky_morto, \
+                    pontuacao, vidas, level, fim_de_jogo, jogo_ganho = reiniciar_jogo()
+                    estado_jogo = 'menu'
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_RIGHT and comando_direcao == 0:
