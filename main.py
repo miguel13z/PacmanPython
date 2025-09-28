@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import pygame
 from fantasma import Fantasma
 from funcoes import *
@@ -267,5 +268,3 @@ while executando:
                     jogo_pausado = False
 
         pygame.display.flip()
-
-pygame.quit()

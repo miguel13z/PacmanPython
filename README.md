@@ -6,6 +6,9 @@ sendo Emanuel o monitor designado como orientador da produção do jogo.
 
 Trata-se de uma réplica simples do clássico Pacman escrita na linguagem de 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> f57f5dc861929e94c440910c601567f8f75d7990
 programação Python, usando principalmente a biblioteca Pygame
 
 - INSTRUÇÕES DE USO - 
@@ -14,8 +17,12 @@ Uma vez baixado, ele estará na extensão .zip, e por isso
 deve ser extraido. Depois disso, basta abrir a pasta e buscar
 o arquivo executável (com a extensão .exe) e rodar o app.
 (Não é necessário usar editor de código nem instalar 
+<<<<<<< HEAD
 bibliotecas externas.)
 =======
 programação Python. Para rodar o jogo basta baixar o arquivo .zip do repositório 
 e executar o arquivo .exe dentro da pasta. 
 >>>>>>> 9d46d4a83a799140fdbac75eeabb7f6a8d5aa3fe
+=======
+bibliotecas externas.)
+>>>>>>> f57f5dc861929e94c440910c601567f8f75d7990
