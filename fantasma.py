@@ -113,6 +113,8 @@ class Fantasma:
 
         return self.vira, self.na_caixa
     
+    # Existe uma função de movimento para cada personagem porque cada um têm um comportamento
+    
     def clyde_movimento(self):
         if self.direcao == 0:
             if self.alvo[0] > self.coord_x and self.vira[0]:

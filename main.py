@@ -5,6 +5,10 @@ from config import *
 
 pygame.init()
 pygame.mixer.init()
+pygame.display.set_caption("Pac-Man em Python")
+
+icone = pygame.image.load('assets/img/jogador/1.png') 
+pygame.display.set_icon(icone)
 
 som_bolinha = pygame.mixer.Sound('assets/sound/pacman_chomp.wav')
 som_morte = pygame.mixer.Sound('assets/sound/pacman_death.wav')
@@ -17,6 +21,7 @@ som_comeco.set_volume(0.2)
 som_comer_fantasma.set_volume(0.2)
 som_powerup.set_volume(0.2)
 pygame.mixer.music.load('assets/sound/menu_sound.wav')
+pygame.mixer.music.set_volume(0.2)
 
 estado_jogo = 'menu'
 jogo_pausado = False

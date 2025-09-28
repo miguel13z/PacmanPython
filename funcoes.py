@@ -42,15 +42,16 @@ def carregar_instrucoes():
     
     instrucoes = [
         "Use as SETAS para mover o Pacman.",
+        "O jogo pode ser pausado com a tecla P.",
         "Coma todas as bolinhas para vencer.",
         "Cuidado com os fantasmas!",
         "Coma as pílulas de poder (maiores)",
-        "para poder comer os fantasmas."
+        "para poder comer os fantasmas.",
     ]
     
     y_pos = 150
     for linha in instrucoes:
-        texto_linha = fonte_instrucoes.render(linha, True, 'white')
+        texto_linha = fonte_instrucoes.render(linha, False, 'white')
         linha_rect = texto_linha.get_rect(center=(LARGURA // 2, y_pos))
         tela.blit(texto_linha, linha_rect)
         y_pos += 30
@@ -76,7 +77,7 @@ def desenha_fim_de_jogo(pontuacao):
     tela.blit(overlay, (0, 0))
 
     fonte_game_over = pygame.font.Font('assets/font/press_start_2p.ttf', 35)
-    texto_game_over = fonte_game_over.render('GAME OVER', True, 'red')
+    texto_game_over = fonte_game_over.render('GAME OVER', False, 'red')
     rect_game_over = texto_game_over.get_rect(center=(LARGURA // 2, ALTURA // 2 - 80))
     tela.blit(texto_game_over, rect_game_over)
 
@@ -86,11 +87,11 @@ def desenha_fim_de_jogo(pontuacao):
     tela.blit(texto_pontuacao_final, rect_pontuacao_final)
 
     fonte_instrucoes = pygame.font.Font('assets/font/press_start_2p.ttf', 10)
-    texto_reiniciar = fonte_instrucoes.render('Pressione ESPAÇO para reiniciar', True, 'white')
+    texto_reiniciar = fonte_instrucoes.render('Pressione ESPAÇO para reiniciar', False, 'white')
     rect_reiniciar = texto_reiniciar.get_rect(center=(LARGURA // 2, ALTURA // 2 + 80))
     tela.blit(texto_reiniciar, rect_reiniciar)
     
-    texto_menu = fonte_instrucoes.render('Pressione ESC para voltar ao Menu', True, 'white')
+    texto_menu = fonte_instrucoes.render('Pressione ESC para voltar ao Menu', False, 'white')
     rect_menu = texto_menu.get_rect(center=(LARGURA // 2, ALTURA // 2 + 110))
     tela.blit(texto_menu, rect_menu)
 
@@ -100,21 +101,21 @@ def desenha_vitoria(pontuacao):
     tela.blit(overlay, (0, 0))
 
     fonte_vitoria = pygame.font.Font('assets/font/press_start_2p.ttf', 30)
-    texto_vitoria = fonte_vitoria.render('VOCÊ VENCEU!', True, 'green')
+    texto_vitoria = fonte_vitoria.render('VOCÊ VENCEU!', False, 'green')
     rect_vitoria = texto_vitoria.get_rect(center=(LARGURA // 2, ALTURA // 2 - 80))
     tela.blit(texto_vitoria, rect_vitoria)
 
     fonte_pontuacao = pygame.font.Font('assets/font/press_start_2p.ttf', 15)
-    texto_pontuacao_final = fonte_pontuacao.render(f'Pontuação Final: {pontuacao}', True, 'white')
+    texto_pontuacao_final = fonte_pontuacao.render(f'Pontuação Final: {pontuacao}', False, 'white')
     rect_pontuacao_final = texto_pontuacao_final.get_rect(center=(LARGURA // 2, ALTURA // 2))
     tela.blit(texto_pontuacao_final, rect_pontuacao_final)
 
     fonte_instrucoes = pygame.font.Font('assets/font/press_start_2p.ttf', 10)
-    texto_reiniciar = fonte_instrucoes.render('Pressione ESPAÇO para reiniciar', True, 'white')
+    texto_reiniciar = fonte_instrucoes.render('Pressione ESPAÇO para reiniciar', False, 'white')
     rect_reiniciar = texto_reiniciar.get_rect(center=(LARGURA // 2, ALTURA // 2 + 80))
     tela.blit(texto_reiniciar, rect_reiniciar)
     
-    texto_menu = fonte_instrucoes.render('Pressione ESC para voltar ao Menu', True, 'white')
+    texto_menu = fonte_instrucoes.render('Pressione ESC para voltar ao Menu', False, 'white')
     rect_menu = texto_menu.get_rect(center=(LARGURA // 2, ALTURA // 2 + 110))
     tela.blit(texto_menu, rect_menu)
 
@@ -124,16 +125,16 @@ def desenha_pausa():
     tela.blit(overlay, (0, 0))
 
     fonte_pausa = pygame.font.Font('assets/font/press_start_2p.ttf', 30)
-    texto_pausa = fonte_pausa.render('JOGO PAUSADO', True, 'yellow')
+    texto_pausa = fonte_pausa.render('JOGO PAUSADO', False, 'yellow')
     rect_pausa = texto_pausa.get_rect(center=(LARGURA // 2, ALTURA // 2 - 60))
     tela.blit(texto_pausa, rect_pausa)
 
-    fonte_instrucao = pygame.font.Font('assets/font/press_start_2p.ttf', 13)
-    texto_continuar = fonte_instrucao.render('Pressione P para continuar', True, 'white')
+    fonte_instrucao = pygame.font.Font('assets/font/press_start_2p.ttf', 12)
+    texto_continuar = fonte_instrucao.render('Pressione P para continuar', False, 'white')
     rect_continuar = texto_continuar.get_rect(center=(LARGURA // 2, ALTURA // 2 + 20))
     tela.blit(texto_continuar, rect_continuar)
     
-    texto_menu = fonte_instrucao.render('Pressione ESC para voltar ao Menu', True, 'white')
+    texto_menu = fonte_instrucao.render('Pressione ESC para voltar ao Menu', False, 'white')
     rect_menu = texto_menu.get_rect(center=(LARGURA // 2, ALTURA // 2 + 50))
     tela.blit(texto_menu, rect_menu)
 
@@ -301,6 +302,7 @@ def verifica_posicao(centro_x, centro_y, largura, altura, direcao, level):
     return pode_virar
 
 def mover_jogador(direcao, jogador_x, jogador_y, pode_virar, velocidade):
+    # 0 -> direita, 1 -> esquerda, 2 -> cima, 3 -> baixo
     if direcao == 0 and pode_virar[0]:
         jogador_x += velocidade
     elif direcao == 1 and pode_virar[1]:
