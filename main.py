@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import pygame
 from fantasma import Fantasma
 from funcoes import *
