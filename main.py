@@ -252,7 +252,7 @@ while rodando:
                     fantasmas_mortos, blinky_morto, inky_morto, clyde_morto, pinky_morto, \
                     pontuacao, vidas, level, fim_de_jogo, jogo_ganho = reiniciar_jogo()
 
-                if event.key == pygame.K_ESCAPE:
+                if event.key == pygame.K_ESCAPE and (fim_de_jogo or jogo_ganho):
                     powerup, contador_power, contador_inicio, jogador_x, jogador_y, direcao, comando_direcao, blinky_x, blinky_y, \
                     direcao_blinky, inky_x, inky_y, direcao_inky, pinky_x, pinky_y, direcao_pinky, clyde_x, clyde_y, direcao_clyde, \
                     fantasmas_mortos, blinky_morto, inky_morto, clyde_morto, pinky_morto, \
