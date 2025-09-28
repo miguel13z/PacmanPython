@@ -30,6 +30,7 @@ class Fantasma:
             tela.blit(img_dead, (self.coord_x, self.coord_y))
 
         fantasma_rect = pygame.rect.Rect((self.coord_x - 10, self.coord_y - 10), (18, 18))
+
         return fantasma_rect
     
     def verifica_colisao(self):
@@ -250,6 +251,7 @@ class Fantasma:
             self.coord_x = 900
         elif self.coord_x > 900:
             self.coord_x - 30
+
         return self.coord_x, self.coord_y, self.direcao
 
     def blinky_movimento(self):
@@ -354,6 +356,7 @@ class Fantasma:
             self.coord_x = 900
         elif self.coord_x > 900:
             self.coord_x - 30
+
         return self.coord_x, self.coord_y, self.direcao
 
     def inky_movimento(self):
@@ -474,6 +477,7 @@ class Fantasma:
             self.coord_x = 900
         elif self.coord_x > 900:
             self.coord_x - 30
+
         return self.coord_x, self.coord_y, self.direcao
 
     def pinky_movimento(self):
@@ -597,4 +601,5 @@ class Fantasma:
             self.coord_x = 900
         elif self.coord_x > 900:
             self.coord_x - 30
+            
         return self.coord_x, self.coord_y, self.direcao
