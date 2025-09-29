@@ -14,3 +14,4 @@ deve ser extraido. Depois disso, basta abrir a pasta e buscar
 o arquivo executável (com a extensão .exe) e rodar o app.
 (Não é necessário usar editor de código nem instalar bibliotecas externas.)
 
+- Link para o vídeo no YouTube: https://youtu.be/yt3LlyRDXOs?si=ObrvuZbutfxZwz_q
